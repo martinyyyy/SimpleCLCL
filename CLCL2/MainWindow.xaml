@@ -85,23 +85,27 @@
         </Grid.RenderTransform>
         <Grid Margin="1,1,7,7" Background="#FF383838">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <ListBox x:Name="listBox" ItemsSource="{Binding clipboardEntrys}" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" KeyUp="listBox_KeyUp" MouseUp="listBox_MouseUp" ItemTemplate="{DynamicResource StringObjectTemplate}" BorderBrush="{x:Null}" FontFamily="Segoe UI" Foreground="White" Padding="10" FontSize="14.667" Background="{x:Null}">
+
+            <TextBox x:Name="searchBox" Margin="5" TextWrapping="Wrap"  Text="{Binding currentSearch, Mode=TwoWay,  UpdateSourceTrigger=PropertyChanged}" Foreground="Black" Background="#FF9E9E9E" Visibility="{Binding searchVisible, Converter={StaticResource BooleanToVisibilityConverter}}" KeyUp="searchBox_KeyUp" />
+
+            <ListBox x:Name="listBox" ItemsSource="{Binding clipboardEntrys}" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseUp="listBox_MouseUp" ItemTemplate="{DynamicResource StringObjectTemplate}" BorderBrush="{x:Null}" FontFamily="Segoe UI" Foreground="White" Padding="10" FontSize="14.667" Background="{x:Null}" Grid.Row="1">
                 <ListBox.Effect>
                     <DropShadowEffect Opacity="0.5"/>
                 </ListBox.Effect>
                 <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
+                    <Style TargetType="{x:Type ListBoxItem}">
                         <Setter Property="HorizontalAlignment" Value="Stretch"/>
                     </Style>
                 </ListBox.ItemContainerStyle>
             </ListBox>
-            <Grid  Grid.Row="1" Margin="5">
+            <Grid  Grid.Row="2" Margin="5">
                 <StackPanel Orientation="Vertical">
-                    <TextBlock><Run Text="CTRL + C" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" /> <Run Text=" = Copy To Clipboard" /></TextBlock>
-                    <TextBlock><Run Text="Space" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" /> | <Run Text="Return" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" /> <Run Text="= Clipboard+Insert" /></TextBlock>
+                    <TextBlock><Run Text="CTRL + C" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" /><Run Text=" "/><Run Text=" = Copy To Clipboard" /></TextBlock>
+                    <TextBlock><Run Text="Space" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" /><Run Text=" | "/><Run Text="Return" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" /><Run Text=" "/><Run Text="= Clipboard+Insert" /></TextBlock>
                 </StackPanel>
             </Grid>
         </Grid>

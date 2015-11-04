@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -54,6 +55,15 @@ namespace SimpleCLCL
 
             hideWindow();
 
+            VM.PropertyChanged += VM_PropertyChanged;
+        }
+
+        private void VM_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if(e.PropertyName == "searchVisible" && !VM.searchVisible)
+            {
+                focusItem();
+            }
         }
 
         private void ClipboardNotification_ClipboardUpdate(object sender, EventArgs e)
@@ -96,12 +106,21 @@ namespace SimpleCLCL
             focusItem();
 
             Storyboard sb = this.FindResource("showWindow") as Storyboard;
+
+            sb.Completed += (sender, e) =>
+            {
+                listBox.KeyUp += listBox_KeyUp;
+            };
+
             sb.Begin();
         }
 
         private void focusItem()
         {
             listBox.UpdateLayout(); // Pre-generates item containers 
+
+            if (listBox.SelectedIndex == -1)
+                listBox.SelectedIndex = 0;
 
             var listBoxItem = (ListBoxItem)listBox
                 .ItemContainerGenerator
@@ -117,6 +136,9 @@ namespace SimpleCLCL
 
         private void hideWindow()
         {
+            listBox.KeyUp -= listBox_KeyUp;
+            VM.currentSearch = "";
+
             Storyboard sb = this.FindResource("hideWindow") as Storyboard;
             sb.Begin();
             sb.Completed += (sender,e) =>
@@ -158,15 +180,13 @@ namespace SimpleCLCL
                 putInClipboard();
                 e.Handled = true;
             }
-
-            if(e.Key == Key.C && Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
+            else if(e.Key == Key.C && Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
             {
                 putInClipboard(false);
                 e.Handled = true;
             }
 
-
-            if (e.Key == Key.S)
+            else if (e.Key == Key.LeftShift)
             {
                 if (listBox.SelectedIndex + 1 >= listBox.Items.Count)
                     listBox.SelectedIndex = 0;
@@ -174,8 +194,10 @@ namespace SimpleCLCL
                     listBox.SelectedIndex++;
 
                 e.Handled = true;
+
+                focusItem();
             }
-            else if(e.Key == Key.W)
+            else if(e.Key == Key.Tab)
             {
                 if (listBox.SelectedIndex - 1 < 0)
                     listBox.SelectedIndex = listBox.Items.Count - 1;
@@ -183,26 +205,40 @@ namespace SimpleCLCL
                     listBox.SelectedIndex--;
 
                 e.Handled = true;
-            }
 
-            focusItem();
+                focusItem();
+            }
+            else if(!searchBox.IsVisible && Keyboard.Modifiers.HasFlag(ModifierKeys.None) && e.Key.ToString().Length == 1 && e.Key != Key.C) // is a char on keyboard and we ignore C
+            {
+                VM.currentSearch = e.Key.ToString();
+                searchBox.Focus();
+                searchBox.CaretIndex = 1;
+            }
         }
 
         private async void putInClipboard(bool insert = true)
         {
-            Clipboard.SetDataObject(VM.clipboardEntrys[listBox.SelectedIndex].value);
             hideWindow();
 
             if (insert)
             {
                 await Task.Delay(250);
+                Clipboard.SetDataObject(VM.clipboardEntrys[listBox.SelectedIndex].value);
                 System.Windows.Forms.SendKeys.SendWait("^v");
             }
+            else
+                Clipboard.SetDataObject(VM.clipboardEntrys[listBox.SelectedIndex].value);
         }
 
         private void listBox_MouseUp(object sender, MouseButtonEventArgs e)
         {
             putInClipboard();
+        }
+
+        private void searchBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Down || e.Key == Key.Up || e.Key == Key.Enter)
+                focusItem();
         }
     }
 }

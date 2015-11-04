@@ -11,12 +11,44 @@ namespace SimpleCLCL
 {
     public class VM : INotifyPropertyChanged
     {
+        string _currentSearch = "";
+        public string currentSearch
+        {
+            get
+            {
+                return _currentSearch;
+            }
+            set
+            {
+                if (_currentSearch != value)
+                {
+                    _currentSearch = value;
+                    RaisePropertyChanged("currentSearch");
+                    RaisePropertyChanged("clipboardEntrys");
+                    RaisePropertyChanged("searchVisible");
+                }
+            }
+        }
+
+        public bool searchVisible
+        {
+            get
+            {
+                return currentSearch != "";
+            }
+        }
+
         ObservableCollection<StringObject> _clipboardEntrys = new ObservableCollection<StringObject>();
         public ObservableCollection<StringObject> clipboardEntrys
         {
             get
             {
-                return _clipboardEntrys;
+                if(currentSearch != "")
+                {
+                    return new ObservableCollection<StringObject>(_clipboardEntrys.Where(x => x.value.ToLower().Contains(currentSearch.ToLower())));
+                }
+                else
+                    return _clipboardEntrys;
             }
             set
             {
