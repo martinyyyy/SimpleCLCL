@@ -208,7 +208,7 @@ namespace SimpleCLCL
 
         private async void putInClipboard(bool insert = true)
         {
-            Clipboard.SetText(VM.clipboardEntrys[listBox.SelectedIndex].value);
+            Clipboard.SetDataObject(VM.clipboardEntrys[listBox.SelectedIndex].value);
             hideWindow();
             Mouse.Capture(null);
 
