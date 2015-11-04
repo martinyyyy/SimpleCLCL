@@ -85,6 +85,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="MouseCapture.cs" />
     <Compile Include="StringObject.cs" />
     <Compile Include="VM.cs" />
     <Page Include="MainWindow.xaml">
@@ -110,7 +111,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MouseCapture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

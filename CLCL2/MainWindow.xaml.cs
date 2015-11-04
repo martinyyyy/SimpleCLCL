@@ -27,20 +27,17 @@ namespace SimpleCLCL
         public event EventHandler<HotkeyEventArgs> HotKeyPressed;
         public VM VM { get; set; }
 
-        public static readonly DependencyProperty MouseCapturedProperty = DependencyProperty.Register("MouseCaptured", typeof(bool), typeof(MainWindow));
-
-        public bool MouseCaptured
-        {
-            get { return (bool)GetValue(MouseCapturedProperty); }
-            set { SetValue(MouseCapturedProperty, value); }
-        }
-
-        private readonly IInputElement _captureElement;
-
         public MainWindow()
         {
-            HotkeyManager.HotkeyAlreadyRegistered += HotkeyManager_HotkeyAlreadyRegistered;
-            HotkeyManager.Current.AddOrReplace("OpenMenuSimpleCLCL", Key.C, ModifierKeys.Alt, OnMenuOpen);
+            try
+            {
+                HotkeyManager.Current.AddOrReplace("OpenMenuSimpleCLCL", Key.C, ModifierKeys.Alt, OnMenuOpen);
+            }
+            catch(Exception)
+            {
+                MessageBox.Show("Something is blocking the ALT+C Hotkey. Maybe SimpleCLCL is already running? Closing SimpleCLCL now.");
+                this.Close();
+            }
 
             ClipboardNotification.ClipboardUpdate += ClipboardNotification_ClipboardUpdate;
 
@@ -55,40 +52,8 @@ namespace SimpleCLCL
             InitializeComponent();
             DataContext = VM;
 
-            _captureElement = this;
-
-            Mouse.AddGotMouseCaptureHandler((DependencyObject)_captureElement, stackPanel1_GotLostMouseCapture);
-            Mouse.AddLostMouseCaptureHandler((DependencyObject)_captureElement, stackPanel1_GotLostMouseCapture);
-            Mouse.Capture(_captureElement);
-            MouseCaptured = Mouse.Captured != null;
-
             hideWindow();
 
-        }
-
-        private void stackPanel1_GotLostMouseCapture(object sender, MouseEventArgs e)
-        {
-            MouseCaptured = Mouse.Captured != null;
-        }
-
-        private void Window_MouseWheel(object sender, MouseWheelEventArgs e)
-        {
-            if(e.Delta < 0)
-            {
-                if (listBox.SelectedIndex + 1 >= listBox.Items.Count)
-                    listBox.SelectedIndex = 0;
-                else
-                    listBox.SelectedIndex++;
-            }
-            else
-            {
-                if (listBox.SelectedIndex - 1 < 0)
-                    listBox.SelectedIndex = listBox.Items.Count-1;
-                else
-                    listBox.SelectedIndex--;
-            }
-
-            focusItem();
         }
 
         private void ClipboardNotification_ClipboardUpdate(object sender, EventArgs e)
@@ -102,11 +67,6 @@ namespace SimpleCLCL
                 if (VM.clipboardEntrys.Count > VM.maxHistoryCount)
                     VM.clipboardEntrys.Remove(VM.clipboardEntrys.Last());
             }
-        }
-
-        private void HotkeyManager_HotkeyAlreadyRegistered(object sender, HotkeyAlreadyRegisteredEventArgs e)
-        {
-            MessageBox.Show(string.Format("The hotkey {0} is already registered by another application", e.Name));
         }
 
         private void OnMenuOpen(object sender, HotkeyEventArgs e)
@@ -204,13 +164,34 @@ namespace SimpleCLCL
                 putInClipboard(false);
                 e.Handled = true;
             }
+
+
+            if (e.Key == Key.S)
+            {
+                if (listBox.SelectedIndex + 1 >= listBox.Items.Count)
+                    listBox.SelectedIndex = 0;
+                else
+                    listBox.SelectedIndex++;
+
+                e.Handled = true;
+            }
+            else if(e.Key == Key.W)
+            {
+                if (listBox.SelectedIndex - 1 < 0)
+                    listBox.SelectedIndex = listBox.Items.Count - 1;
+                else
+                    listBox.SelectedIndex--;
+
+                e.Handled = true;
+            }
+
+            focusItem();
         }
 
         private async void putInClipboard(bool insert = true)
         {
             Clipboard.SetDataObject(VM.clipboardEntrys[listBox.SelectedIndex].value);
             hideWindow();
-            Mouse.Capture(null);
 
             if (insert)
             {
@@ -222,11 +203,6 @@ namespace SimpleCLCL
         private void listBox_MouseUp(object sender, MouseButtonEventArgs e)
         {
             putInClipboard();
-        }
-
-        private void Window_Activated(object sender, EventArgs e)
-        {
-            Mouse.Capture(_captureElement);
         }
     }
 }

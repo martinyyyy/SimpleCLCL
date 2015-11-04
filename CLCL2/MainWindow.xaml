@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SimpleCLCL"
         mc:Ignorable="d"
-        Title="SimpleCLCL" AllowsTransparency="True" Width="300" Deactivated="Window_Deactivated" Closing="Window_Closing" WindowStyle="None" KeyUp="Window_KeyUp" ResizeMode="NoResize" SizeToContent="Height" Background="{x:Null}" FontFamily="Segoe UI Semilight" Activated="Window_Activated" MouseWheel="Window_MouseWheel" Visibility="Visible" Foreground="{DynamicResource DisabledForegroundBrush}">
+        Title="SimpleCLCL" AllowsTransparency="True" Width="300" Deactivated="Window_Deactivated" Closing="Window_Closing" WindowStyle="None" KeyUp="Window_KeyUp" ResizeMode="NoResize" SizeToContent="Height" Background="{x:Null}" FontFamily="Segoe UI Semilight" Visibility="Visible" Foreground="{DynamicResource DisabledForegroundBrush}">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <DataTemplate x:Key="StringObjectTemplate">
