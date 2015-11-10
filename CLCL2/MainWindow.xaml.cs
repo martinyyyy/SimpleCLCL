@@ -73,7 +73,8 @@ namespace SimpleCLCL
         {
             if (Clipboard.ContainsText())
             {
-                String text = Clipboard.GetText();
+                // WHY IS THIS BETTER THAN CLIPBOARD.GETTEXT() ?????
+                String text = Clipboard.GetDataObject().GetData(DataFormats.UnicodeText).ToString();
                 VM.clipboardEntrys.Remove(VM.clipboardEntrys.Where(x => x.value == text).FirstOrDefault());
                 VM.clipboardEntrys.Insert(0, new StringObject() { value = text });
 
@@ -221,18 +222,20 @@ namespace SimpleCLCL
                 forceTooltip = true;
                 openTooltip();
             }
-
-            if (e.Key == Key.Left)
+            else if (e.Key == Key.Left)
             {
                 forceTooltip = false;
                 if (toolTip != null)
                     toolTip.IsOpen = false;
             }
-            
-            if (e.Key == Key.Enter || e.Key == Key.Return || e.Key == Key.Space)
+            else if (e.Key == Key.Enter || e.Key == Key.Return || e.Key == Key.Space)
             {
                 putInClipboard();
                 e.Handled = true;
+            }
+            else if(e.Key == Key.Back)
+            {
+                deleteCurrentEntry();
             }
             else if (e.Key == Key.C && Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
             {
@@ -270,6 +273,12 @@ namespace SimpleCLCL
             }
         }
 
+        private void deleteCurrentEntry()
+        {
+            if(listBox.SelectedIndex != -1)
+            VM.clipboardEntrys.RemoveAt(listBox.SelectedIndex);
+        }
+
         private async void putInClipboard(bool insert = true)
         {
             hideWindow();
@@ -277,6 +286,8 @@ namespace SimpleCLCL
             if (insert)
             {
                 await Task.Delay(250);
+
+
                 Clipboard.SetDataObject(VM.clipboardEntrys[listBox.SelectedIndex].value);
                 System.Windows.Forms.SendKeys.SendWait("^v");
             }
@@ -322,6 +333,14 @@ namespace SimpleCLCL
                 toolTip.Content = ((StringObject)listBox.SelectedItem).value;
                 toolTip.PlacementTarget = listBoxItem;
             }
+        }
+
+        private void deleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            SimpleCLCL.Properties.Settings.Default.clipboardHistory = new System.Collections.Specialized.StringCollection();
+            SimpleCLCL.Properties.Settings.Default.Save();
+
+            VM.clipboardEntrys.Clear();
         }
     }
 }
