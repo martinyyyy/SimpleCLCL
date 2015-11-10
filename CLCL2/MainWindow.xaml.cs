@@ -28,13 +28,16 @@ namespace SimpleCLCL
         public event EventHandler<HotkeyEventArgs> HotKeyPressed;
         public VM VM { get; set; }
 
+        ToolTip toolTip;
+        bool forceTooltip = false;
+
         public MainWindow()
         {
             try
             {
                 HotkeyManager.Current.AddOrReplace("OpenMenuSimpleCLCL", Key.C, ModifierKeys.Alt, OnMenuOpen);
             }
-            catch(Exception)
+            catch (Exception)
             {
                 MessageBox.Show("Something is blocking the ALT+C Hotkey. Maybe SimpleCLCL is already running? Closing SimpleCLCL now.");
                 this.Close();
@@ -60,7 +63,7 @@ namespace SimpleCLCL
 
         private void VM_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if(e.PropertyName == "searchVisible" && !VM.searchVisible)
+            if (e.PropertyName == "searchVisible" && !VM.searchVisible)
             {
                 focusItem();
             }
@@ -91,12 +94,24 @@ namespace SimpleCLCL
 
         private void showWindow()
         {
-            Point point = MouseCapture.GetMousePosition();
-            this.Left = point.X-10;
-            this.Top = point.Y-10;
+            forceTooltip = false;
 
-            if (this.Top + this.Height > System.Windows.SystemParameters.PrimaryScreenHeight)
-                this.Top = System.Windows.SystemParameters.PrimaryScreenHeight - this.Height;
+            Point point = MouseCapture.GetMousePosition();
+            this.Left = point.X + 10;
+            this.Top = point.Y - 10;
+
+            System.Windows.Forms.Screen currScreen = System.Windows.Forms.Screen.PrimaryScreen;
+
+            foreach (System.Windows.Forms.Screen screen in System.Windows.Forms.Screen.AllScreens)
+            {
+                // current screen
+                if (screen.Bounds.IntersectsWith(new System.Drawing.Rectangle((int)this.Left, (int)this.Top, 1, 1)))
+                    currScreen = screen;
+            }
+
+
+            if (this.Top + this.Height > currScreen.Bounds.Height)
+                this.Top = currScreen.Bounds.Height - this.Height;
 
             this.Topmost = true;
             this.Show();
@@ -122,11 +137,37 @@ namespace SimpleCLCL
             if (listBox.SelectedIndex == -1)
                 listBox.SelectedIndex = 0;
 
-            var listBoxItem = (ListBoxItem)listBox
+            ListBoxItem listBoxItem = getCurrentListboxItem();
+            if (listBoxItem != null) listBoxItem.Focus();
+        }
+
+        private ListBoxItem getCurrentListboxItem()
+        {
+            if (listBox.SelectedIndex == -1)
+                listBox.SelectedIndex = 0;
+
+            return (ListBoxItem)listBox
                 .ItemContainerGenerator
                 .ContainerFromItem(listBox.SelectedItem);
+        }
 
-            if(listBoxItem != null)listBoxItem.Focus();
+
+
+        private childItem FindVisualChild<childItem>(DependencyObject obj) where childItem : DependencyObject
+        {
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
+            {
+                DependencyObject child = VisualTreeHelper.GetChild(obj, i);
+                if (child != null && child is childItem)
+                    return (childItem)child;
+                else
+                {
+                    childItem childOfChild = FindVisualChild<childItem>(child);
+                    if (childOfChild != null)
+                        return childOfChild;
+                }
+            }
+            return null;
         }
 
         private void Window_Deactivated(object sender, EventArgs e)
@@ -141,7 +182,7 @@ namespace SimpleCLCL
 
             Storyboard sb = this.FindResource("hideWindow") as Storyboard;
             sb.Begin();
-            sb.Completed += (sender,e) =>
+            sb.Completed += (sender, e) =>
             {
                 this.Hide();
                 this.Topmost = false;
@@ -175,12 +216,25 @@ namespace SimpleCLCL
 
         private void listBox_KeyUp(object sender, KeyEventArgs e)
         {
+            if (e.Key == Key.Right)
+            {
+                forceTooltip = true;
+                openTooltip();
+            }
+
+            if (e.Key == Key.Left)
+            {
+                forceTooltip = false;
+                if (toolTip != null)
+                    toolTip.IsOpen = false;
+            }
+            
             if (e.Key == Key.Enter || e.Key == Key.Return || e.Key == Key.Space)
             {
                 putInClipboard();
                 e.Handled = true;
             }
-            else if(e.Key == Key.C && Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
+            else if (e.Key == Key.C && Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
             {
                 putInClipboard(false);
                 e.Handled = true;
@@ -197,7 +251,7 @@ namespace SimpleCLCL
 
                 focusItem();
             }
-            else if(e.Key == Key.Tab)
+            else if (e.Key == Key.Tab)
             {
                 if (listBox.SelectedIndex - 1 < 0)
                     listBox.SelectedIndex = listBox.Items.Count - 1;
@@ -208,7 +262,7 @@ namespace SimpleCLCL
 
                 focusItem();
             }
-            else if(!searchBox.IsVisible && Keyboard.Modifiers.HasFlag(ModifierKeys.None) && e.Key.ToString().Length == 1 && e.Key != Key.C) // is a char on keyboard and we ignore C
+            else if (!searchBox.IsVisible && Keyboard.Modifiers.HasFlag(ModifierKeys.None) && e.Key.ToString().Length == 1 && e.Key != Key.C) // is a char on keyboard and we ignore C
             {
                 VM.currentSearch = e.Key.ToString();
                 searchBox.Focus();
@@ -239,6 +293,35 @@ namespace SimpleCLCL
         {
             if (e.Key == Key.Down || e.Key == Key.Up || e.Key == Key.Enter)
                 focusItem();
+        }
+
+        private void initTooltip()
+        {
+            if(toolTip == null)
+            {
+                toolTip = new ToolTip();
+                toolTip.StaysOpen = false;
+                toolTip.IsOpen = true;
+                toolTip.Placement = System.Windows.Controls.Primitives.PlacementMode.Right;
+            }
+        }
+
+        private void listBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(forceTooltip)
+                openTooltip();
+        }
+
+        private void openTooltip()
+        {
+            ListBoxItem listBoxItem = getCurrentListboxItem();
+            if (listBoxItem != null)
+            {
+                initTooltip();
+                toolTip.IsOpen = true;
+                toolTip.Content = ((StringObject)listBox.SelectedItem).value;
+                toolTip.PlacementTarget = listBoxItem;
+            }
         }
     }
 }

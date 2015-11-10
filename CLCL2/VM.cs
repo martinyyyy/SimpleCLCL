@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -74,6 +75,13 @@ namespace SimpleCLCL
                     _maxHistoryCount = value;
                     RaisePropertyChanged("maxHistoryCount");
                 }
+            }
+        }
+
+        public String currentVersion {
+            get
+            {
+                return Assembly.GetExecutingAssembly().GetName().Version.ToString();
             }
         }
 
