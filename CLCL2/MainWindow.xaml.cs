@@ -33,6 +33,8 @@ namespace SimpleCLCL
 
         public MainWindow()
         {
+            InitializeComponent();
+
             try
             {
                 HotkeyManager.Current.AddOrReplace("OpenMenuSimpleCLCL", Key.C, ModifierKeys.Alt, OnMenuOpen);
@@ -46,15 +48,13 @@ namespace SimpleCLCL
             ClipboardNotification.ClipboardUpdate += ClipboardNotification_ClipboardUpdate;
 
             VM = new VM();
+            DataContext = VM;
 
             if (SimpleCLCL.Properties.Settings.Default.clipboardHistory != null)
             {
                 foreach (String entry in SimpleCLCL.Properties.Settings.Default.clipboardHistory)
                     VM.clipboardEntrys.Add(new StringObject() { value = entry });
             }
-
-            InitializeComponent();
-            DataContext = VM;
 
             hideWindow();
 
@@ -69,17 +69,33 @@ namespace SimpleCLCL
             }
         }
 
-        private void ClipboardNotification_ClipboardUpdate(object sender, EventArgs e)
+        private async void ClipboardNotification_ClipboardUpdate(object sender, EventArgs e)
         {
             if (Clipboard.ContainsText())
             {
-                // WHY IS THIS BETTER THAN CLIPBOARD.GETTEXT() ?????
-                String text = Clipboard.GetDataObject().GetData(DataFormats.UnicodeText).ToString();
-                VM.clipboardEntrys.Remove(VM.clipboardEntrys.Where(x => x.value == text).FirstOrDefault());
-                VM.clipboardEntrys.Insert(0, new StringObject() { value = text });
+                bool done = false;
+                for (int i = 0; i < 5 && done != true; i++)
+                {
+                    // Delay if clipboard still open by other app
+                    if (!done)
+                        await Task.Delay(20);
 
-                if (VM.clipboardEntrys.Count > VM.maxHistoryCount)
-                    VM.clipboardEntrys.Remove(VM.clipboardEntrys.Last());
+                    try
+                    {
+                        String text = Clipboard.GetDataObject().GetData(DataFormats.UnicodeText).ToString();
+                        VM.clipboardEntrys.Remove(VM.clipboardEntrys.Where(x => x.value == text).FirstOrDefault());
+                        VM.clipboardEntrys.Insert(0, new StringObject() { value = text });
+
+                        if (VM.clipboardEntrys.Count > VM.maxHistoryCount)
+                            VM.clipboardEntrys.Remove(VM.clipboardEntrys.Last());
+
+                        done = true;
+                    }
+                    catch (System.Runtime.InteropServices.COMException)
+                    {
+                        // Clipboard already opened
+                    }
+                }
             }
         }
 
@@ -285,10 +301,8 @@ namespace SimpleCLCL
 
             if (insert)
             {
-                await Task.Delay(250);
-
-
                 Clipboard.SetDataObject(VM.clipboardEntrys[listBox.SelectedIndex].value);
+                await Task.Delay(250);
                 System.Windows.Forms.SendKeys.SendWait("^v");
             }
             else
