@@ -33,5 +33,16 @@ namespace SimpleCLCL.Properties {
                 this["clipboardHistory"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Collections.Specialized.StringCollection pinnedClipboardHistory {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["pinnedClipboardHistory"]));
+            }
+            set {
+                this["pinnedClipboardHistory"] = value;
+            }
+        }
     }
 }

@@ -20,6 +20,9 @@ namespace SimpleCLCL
             }
         }
 
+        public bool pinned
+        { get; set; }
+
         public bool isShort
         {
             get

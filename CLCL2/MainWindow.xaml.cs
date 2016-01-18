@@ -56,6 +56,12 @@ namespace SimpleCLCL
                     VM.clipboardEntrys.Add(new StringObject() { value = entry });
             }
 
+            if (SimpleCLCL.Properties.Settings.Default.pinnedClipboardHistory != null)
+            {
+                foreach (String entry in SimpleCLCL.Properties.Settings.Default.pinnedClipboardHistory)
+                    VM.pinnedClipboardEntrys.Add(new StringObject() { value = entry, pinned=true });
+            }
+
             hideWindow();
 
             VM.PropertyChanged += VM_PropertyChanged;
@@ -71,6 +77,7 @@ namespace SimpleCLCL
 
         private async void ClipboardNotification_ClipboardUpdate(object sender, EventArgs e)
         {
+
             if (Clipboard.ContainsText())
             {
                 bool done = false;
@@ -102,11 +109,26 @@ namespace SimpleCLCL
         private void OnMenuOpen(object sender, HotkeyEventArgs e)
         {
             if (this.IsVisible)
-                hideWindow();
+                toggleBetweenPinnedAndUnpinned();
             else
+            {
+                toggleBetweenPinnedAndUnpinned(true);
                 showWindow();
+            }
 
             e.Handled = true;
+        }
+
+        private void toggleBetweenPinnedAndUnpinned(bool forceUnpinned = false)
+        {
+            if (forceUnpinned || listBox.ItemsSource == VM.pinnedClipboardEntrys)
+                listBox.ItemsSource = VM.clipboardEntrys;
+            else
+                listBox.ItemsSource = VM.pinnedClipboardEntrys;
+
+            VM.pinnedActive = listBox.ItemsSource == VM.pinnedClipboardEntrys;
+
+            focusItem();
         }
 
         private void showWindow()
@@ -219,6 +241,10 @@ namespace SimpleCLCL
             foreach (StringObject entry in VM.clipboardEntrys)
                 SimpleCLCL.Properties.Settings.Default.clipboardHistory.Add(entry.value);
 
+            SimpleCLCL.Properties.Settings.Default.pinnedClipboardHistory = new System.Collections.Specialized.StringCollection();
+            foreach (StringObject entry in VM.pinnedClipboardEntrys)
+                SimpleCLCL.Properties.Settings.Default.pinnedClipboardHistory.Add(entry.value);
+
             SimpleCLCL.Properties.Settings.Default.Save();
         }
 
@@ -292,7 +318,7 @@ namespace SimpleCLCL
         private void deleteCurrentEntry()
         {
             if(listBox.SelectedIndex != -1)
-            VM.clipboardEntrys.RemoveAt(listBox.SelectedIndex);
+            (listBox.ItemsSource as ObservableCollection<StringObject>).RemoveAt(listBox.SelectedIndex);
         }
 
         private async void putInClipboard(bool insert = true)
@@ -301,12 +327,12 @@ namespace SimpleCLCL
 
             if (insert)
             {
-                Clipboard.SetDataObject(VM.clipboardEntrys[listBox.SelectedIndex].value);
+                Clipboard.SetDataObject((listBox.ItemsSource as ObservableCollection<StringObject>)[listBox.SelectedIndex].value);
                 await Task.Delay(250);
                 System.Windows.Forms.SendKeys.SendWait("^v");
             }
             else
-                Clipboard.SetDataObject(VM.clipboardEntrys[listBox.SelectedIndex].value);
+                Clipboard.SetDataObject((listBox.ItemsSource as ObservableCollection<StringObject>)[listBox.SelectedIndex].value);
         }
 
         private void listBox_MouseUp(object sender, MouseButtonEventArgs e)
@@ -356,5 +382,20 @@ namespace SimpleCLCL
 
             VM.clipboardEntrys.Clear();
         }
+
+        private void pinChbx_Checked(object sender, RoutedEventArgs e)
+        {
+            StringObject s = (sender as CheckBox).DataContext as StringObject;
+            VM.clipboardEntrys.Remove(s);
+            VM.pinnedClipboardEntrys.Insert(0, s);
+        }
+
+        private void pinChbx_Unchecked(object sender, RoutedEventArgs e)
+        {
+            StringObject s = (sender as CheckBox).DataContext as StringObject;
+            VM.clipboardEntrys.Insert(0, s);
+            VM.pinnedClipboardEntrys.Remove(s);
+        }
+
     }
 }

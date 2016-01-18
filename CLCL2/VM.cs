@@ -39,12 +39,30 @@ namespace SimpleCLCL
             }
         }
 
+        bool _pinnedActive = false;
+        public bool pinnedActive
+        {
+            get
+            {
+                return _pinnedActive;
+            }
+            set
+            {
+                if (_pinnedActive != value)
+                {
+                    _pinnedActive = value;
+                    RaisePropertyChanged("pinnedActive");
+                }
+            }
+        }
+
+
         ObservableCollection<StringObject> _clipboardEntrys = new ObservableCollection<StringObject>();
         public ObservableCollection<StringObject> clipboardEntrys
         {
             get
             {
-                if(currentSearch != "")
+                if (currentSearch != "")
                 {
                     return new ObservableCollection<StringObject>(_clipboardEntrys.Where(x => x.value.ToLower().Contains(currentSearch.ToLower())));
                 }
@@ -57,6 +75,28 @@ namespace SimpleCLCL
                 {
                     _clipboardEntrys = value;
                     RaisePropertyChanged("clipboardEntrys");
+                }
+            }
+        }
+
+        ObservableCollection<StringObject> _pinnedClipboardEntrys = new ObservableCollection<StringObject>();
+        public ObservableCollection<StringObject> pinnedClipboardEntrys
+        {
+            get
+            {
+                if (currentSearch != "")
+                {
+                    return new ObservableCollection<StringObject>(_pinnedClipboardEntrys.Where(x => x.value.ToLower().Contains(currentSearch.ToLower())));
+                }
+                else
+                    return _pinnedClipboardEntrys;
+            }
+            set
+            {
+                if (_clipboardEntrys != value)
+                {
+                    _pinnedClipboardEntrys = value;
+                    RaisePropertyChanged("pinnedClipboardEntrys");
                 }
             }
         }
