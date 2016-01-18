@@ -10,7 +10,7 @@ using System.Windows;
 [assembly: AssemblyTitle("SimpleCLCL")]
 [assembly: AssemblyDescription("Simple clone of CLCL")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Martin M.")]
+[assembly: AssemblyCompany("Martin")]
 [assembly: AssemblyProduct("SimpleCLCL")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]

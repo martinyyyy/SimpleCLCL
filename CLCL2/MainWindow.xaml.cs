@@ -217,6 +217,12 @@ namespace SimpleCLCL
         private void hideWindow()
         {
             listBox.KeyUp -= listBox_KeyUp;
+            if (VM == null)
+            {
+                this.Hide();
+                return;
+            }
+
             VM.currentSearch = "";
 
             Storyboard sb = this.FindResource("hideWindow") as Storyboard;
