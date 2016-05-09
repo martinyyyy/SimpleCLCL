@@ -730,7 +730,7 @@
 
             <TextBox x:Name="searchBox" Margin="5" TextWrapping="Wrap"  Text="{Binding currentSearch, Mode=TwoWay,  UpdateSourceTrigger=PropertyChanged}" Foreground="Black" Background="#FF9E9E9E" Visibility="{Binding searchVisible, Converter={StaticResource BooleanToVisibilityConverter}}" KeyUp="searchBox_KeyUp" />
             <Label Content="Pinned Entrys" Background="{x:Null}" Foreground="#FFF3FF00" HorizontalContentAlignment="Center" HorizontalAlignment="Center" FontFamily="Segoe UI Light" FontSize="16" Padding="5,5,5,0" Visibility="{Binding pinnedActive, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-            <ListBox x:Name="listBox" ItemsSource="{Binding clipboardEntrys}" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseUp="listBox_MouseUp" ItemTemplate="{DynamicResource StringObjectTemplate}" BorderBrush="{x:Null}" FontFamily="Segoe UI" Foreground="White" Padding="2,10,10,10" FontSize="14.667" Background="{x:Null}" Grid.Row="2" SelectionChanged="listBox_SelectionChanged" Style="{DynamicResource ListBoxStyle1}">
+            <ListBox x:Name="listBox" ItemsSource="{Binding clipboardEntrys, Mode=TwoWay}" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseUp="listBox_MouseUp" ItemTemplate="{DynamicResource StringObjectTemplate}" BorderBrush="{x:Null}" FontFamily="Segoe UI" Foreground="White" Padding="2,10,10,10" FontSize="14.667" Background="{x:Null}" Grid.Row="2" SelectionChanged="listBox_SelectionChanged" Style="{DynamicResource ListBoxStyle1}">
                 <ListBox.Effect>
                     <DropShadowEffect Opacity="0.5"/>
                 </ListBox.Effect>
