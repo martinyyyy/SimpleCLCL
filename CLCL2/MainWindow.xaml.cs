@@ -243,6 +243,8 @@ namespace SimpleCLCL
 
         private void saveSettings()
         {
+            if (VM.clipboardEntrys == null || VM.pinnedClipboardEntrys == null) return;
+
             SimpleCLCL.Properties.Settings.Default.clipboardHistory = new System.Collections.Specialized.StringCollection();
             foreach (StringObject entry in VM.clipboardEntrys)
                 SimpleCLCL.Properties.Settings.Default.clipboardHistory.Add(entry.value);
@@ -281,7 +283,7 @@ namespace SimpleCLCL
                 putInClipboard();
                 e.Handled = true;
             }
-            else if(e.Key == Key.Back)
+            else if(e.Key == Key.Delete)
             {
                 deleteCurrentEntry();
             }
@@ -329,6 +331,8 @@ namespace SimpleCLCL
 
         private async void putInClipboard(bool insert = true)
         {
+            if (listBox.SelectedIndex == -1) return;
+
             hideWindow();
 
             if (insert)
@@ -350,6 +354,10 @@ namespace SimpleCLCL
         {
             if (e.Key == Key.Down || e.Key == Key.Up || e.Key == Key.Enter)
                 focusItem();
+            // TWO WAY BINDING KILLS EVERYTHING -> Ugly but works this way
+            else if (VM.pinnedActive)
+                listBox.ItemsSource = VM.pinnedClipboardEntrys;
+            else listBox.ItemsSource = VM.clipboardEntrys;
         }
 
         private void initTooltip()

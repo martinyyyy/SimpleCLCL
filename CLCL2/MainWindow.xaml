@@ -730,7 +730,7 @@
 
             <TextBox x:Name="searchBox" Margin="5" TextWrapping="Wrap"  Text="{Binding currentSearch, Mode=TwoWay,  UpdateSourceTrigger=PropertyChanged}" Foreground="Black" Background="#FF9E9E9E" Visibility="{Binding searchVisible, Converter={StaticResource BooleanToVisibilityConverter}}" KeyUp="searchBox_KeyUp" />
             <Label Content="Pinned Entrys" Background="{x:Null}" Foreground="#FFF3FF00" HorizontalContentAlignment="Center" HorizontalAlignment="Center" FontFamily="Segoe UI Light" FontSize="16" Padding="5,5,5,0" Visibility="{Binding pinnedActive, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-            <ListBox x:Name="listBox" ItemsSource="{Binding clipboardEntrys, Mode=TwoWay}" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseUp="listBox_MouseUp" ItemTemplate="{DynamicResource StringObjectTemplate}" BorderBrush="{x:Null}" FontFamily="Segoe UI" Foreground="White" Padding="2,10,10,10" FontSize="14.667" Background="{x:Null}" Grid.Row="2" SelectionChanged="listBox_SelectionChanged" Style="{DynamicResource ListBoxStyle1}">
+            <ListBox x:Name="listBox" ItemsSource="{Binding clipboardEntrys}" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseUp="listBox_MouseUp" ItemTemplate="{DynamicResource StringObjectTemplate}" BorderBrush="{x:Null}" FontFamily="Segoe UI" Foreground="White" Padding="2,10,10,10" FontSize="14.667" Background="{x:Null}" Grid.Row="2" SelectionChanged="listBox_SelectionChanged" Style="{DynamicResource ListBoxStyle1}">
                 <ListBox.Effect>
                     <DropShadowEffect Opacity="0.5"/>
                 </ListBox.Effect>
@@ -748,14 +748,14 @@
                 <Expander x:Name="expander" Header="Help" Margin="0,0,0,8.92" d:LayoutOverrides="Height" Foreground="{DynamicResource Expander.Disabled.Arrow.Stroke}" Style="{DynamicResource ExpanderStyle1}">
                     <Grid Margin="5,0,0,0">
                         <StackPanel Orientation="Vertical" Margin="0" Background="{Binding Background, ElementName=grid1}">
-                            <TextBlock><Run Text="NEW " Foreground="Red" FontStyle="Italic" FontFamily="Segoe UI" FontSize="8"/><Run Text="ALT + C" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" /><Run Text=" "/><Run Text=" = Switch To Pinned Entrys" /></TextBlock>
+                            <TextBlock><Run Text="ALT + C" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" /><Run Text=" "/><Run Text=" = Switch To Pinned Entrys" /></TextBlock>
                             <TextBlock><Run Text="CTRL + C" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" /><Run Text=" "/><Run Text=" = Copy To Clipboard" /></TextBlock>
                             <TextBlock><Run Text="␣ (Space) ⏎ (Return)" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" /><Run Text=" "/><Run Text="= Clipboard+Insert" /></TextBlock>
                             <TextBlock><Run Text="← →" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" /><Run Text=" = Open/Close Tooltip" /></TextBlock>
                             <TextBlock><Run Text="↓ ⇧ (Shift)" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" /><Run Text=" = Next Entry" /></TextBlock>
                             <TextBlock><Run Text="↑ ⇥ (Tab)" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" /><Run Text=" = Previous Entry" /></TextBlock>
                             <TextBlock><Run Text="A-Z" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" /><Run Text=" = Begin Search" /></TextBlock>
-                            <TextBlock><Run Text="⌫ (Backspace)" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" /><Run Text=" = Delete Selection" /></TextBlock>
+                            <TextBlock><Run Text="DEL" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" /><Run Text=" = Delete Selection" /></TextBlock>
 
                         </StackPanel>
                     </Grid>
