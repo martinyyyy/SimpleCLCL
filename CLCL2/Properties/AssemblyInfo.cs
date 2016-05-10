@@ -10,7 +10,7 @@ using System.Windows;
 [assembly: AssemblyTitle("SimpleCLCL")]
 [assembly: AssemblyDescription("Simple clone of CLCL")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Martin")]
+[assembly: AssemblyCompany("Martin Muckel")]
 [assembly: AssemblyProduct("SimpleCLCL")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
@@ -51,5 +51,5 @@ using System.Windows;
 // Sie können alle Werte angeben oder die standardmäßigen Build- und Revisionsnummern 
 // übernehmen, indem Sie "*" eingeben:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.3.2.0")]
-[assembly: AssemblyFileVersion("1.3.2.0")]
+[assembly: AssemblyVersion("1.4.0.0")]
+[assembly: AssemblyFileVersion("1.4.0.0")]

@@ -32,6 +32,24 @@ namespace SimpleCLCL
             }
         }
 
+        string _currentSelectedText;
+        public string currentSelectedText
+        {
+            get
+            {
+                return _currentSelectedText;
+            }
+            set
+            {
+                if (_currentSelectedText != value)
+                {
+                    _currentSelectedText = value;
+                    RaisePropertyChanged("currentSelectedText");
+                }
+            }
+        }
+
+
         public bool searchVisible
         {
             get

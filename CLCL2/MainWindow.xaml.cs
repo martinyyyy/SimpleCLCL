@@ -90,6 +90,11 @@ namespace SimpleCLCL
                     try
                     {
                         String text = Clipboard.GetDataObject().GetData(DataFormats.UnicodeText).ToString();
+
+                        // dont put empty stuff in the history
+                        if (text.Trim().Count() == 0)
+                            return;
+
                         VM.clipboardEntrys.Remove(VM.clipboardEntrys.Where(x => x.value == text).FirstOrDefault());
                         VM.clipboardEntrys.Insert(0, new StringObject() { value = text });
 
@@ -134,7 +139,6 @@ namespace SimpleCLCL
         private void showWindow()
         {
             forceTooltip = false;
-
             Point point = MouseCapture.GetMousePosition();
             this.Left = point.X + 10;
             this.Top = point.Y - 10;
@@ -177,7 +181,11 @@ namespace SimpleCLCL
                 listBox.SelectedIndex = 0;
 
             ListBoxItem listBoxItem = getCurrentListboxItem();
-            if (listBoxItem != null) listBoxItem.Focus();
+            if (listBoxItem != null)
+            {
+                listBoxItem.Focus();
+                listBox.ScrollIntoView(listBox.Items[0]);
+            }
         }
 
         private ListBoxItem getCurrentListboxItem()
@@ -216,6 +224,8 @@ namespace SimpleCLCL
 
         private void hideWindow()
         {
+            InputTextPopup.IsOpen = false;
+
             listBox.KeyUp -= listBox_KeyUp;
             if (VM == null)
             {
@@ -347,7 +357,16 @@ namespace SimpleCLCL
 
         private void listBox_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            putInClipboard();
+            if (e.ChangedButton != MouseButton.Right)
+                putInClipboard();
+            else openInputText();
+        }
+
+        private void openInputText()
+        {
+            if (listBox.SelectedIndex == -1) return;
+            InputTextPopup.IsOpen = true;
+            VM.currentSelectedText = (listBox.ItemsSource as ObservableCollection<StringObject>)[listBox.SelectedIndex].value;
         }
 
         private void searchBox_KeyUp(object sender, KeyEventArgs e)

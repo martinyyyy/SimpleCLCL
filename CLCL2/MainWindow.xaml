@@ -750,6 +750,7 @@
                         <StackPanel Orientation="Vertical" Margin="0" Background="{Binding Background, ElementName=grid1}">
                             <TextBlock><Run Text="ALT + C" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" /><Run Text=" "/><Run Text=" = Switch To Pinned Entrys" /></TextBlock>
                             <TextBlock><Run Text="CTRL + C" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" /><Run Text=" "/><Run Text=" = Copy To Clipboard" /></TextBlock>
+                            <TextBlock><Run Text="NEW " Foreground="Red" FontStyle="Italic" FontFamily="Segoe UI" FontSize="8"/><Run Text="Right Mouse" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" /><Run Text=" "/><Run Text=" = Open Textbox" /></TextBlock>
                             <TextBlock><Run Text="␣ (Space) ⏎ (Return)" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" /><Run Text=" "/><Run Text="= Clipboard+Insert" /></TextBlock>
                             <TextBlock><Run Text="← →" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" /><Run Text=" = Open/Close Tooltip" /></TextBlock>
                             <TextBlock><Run Text="↓ ⇧ (Shift)" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" /><Run Text=" = Next Entry" /></TextBlock>
@@ -764,5 +765,10 @@
                 <TextBlock Grid.Column="1" VerticalAlignment="Bottom" FontSize="8" Margin="0,0,5,0"><Run Text="v"/><Run Text="{Binding currentVersion, Mode=OneTime}" /></TextBlock>
             </Grid>
         </Grid>
+        <Popup Name="InputTextPopup" HorizontalAlignment="Left" VerticalAlignment="Top" IsOpen="False" Placement="Mouse">
+            <StackPanel>
+                <TextBox Text="{Binding currentSelectedText}"  />
+            </StackPanel>
+        </Popup>
     </Grid>
 </Window>
