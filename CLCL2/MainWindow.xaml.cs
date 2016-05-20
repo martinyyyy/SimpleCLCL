@@ -77,7 +77,6 @@ namespace SimpleCLCL
 
         private async void ClipboardNotification_ClipboardUpdate(object sender, EventArgs e)
         {
-
             if (Clipboard.ContainsText())
             {
                 bool done = false;
@@ -107,6 +106,12 @@ namespace SimpleCLCL
                     {
                         // Clipboard already opened
                     }
+                }
+
+                // Put text into clipboard from text popup
+                if (InputTextPopup.IsOpen && done)
+                {
+                    putInClipboard(true, false, VM.clipboardEntrys.First().value);
                 }
             }
         }
@@ -339,20 +344,22 @@ namespace SimpleCLCL
             (listBox.ItemsSource as ObservableCollection<StringObject>).RemoveAt(listBox.SelectedIndex);
         }
 
-        private async void putInClipboard(bool insert = true)
+        private async void putInClipboard(bool insert = true, bool fromListbox = true, String text = "")
         {
-            if (listBox.SelectedIndex == -1) return;
+            if (fromListbox && listBox.SelectedIndex == -1) return;
 
             hideWindow();
 
+            if (fromListbox)
+                text = (listBox.ItemsSource as ObservableCollection<StringObject>)[listBox.SelectedIndex].value;
+
+            Clipboard.SetDataObject(text);
+
             if (insert)
             {
-                Clipboard.SetDataObject((listBox.ItemsSource as ObservableCollection<StringObject>)[listBox.SelectedIndex].value);
                 await Task.Delay(250);
                 System.Windows.Forms.SendKeys.SendWait("^v");
             }
-            else
-                Clipboard.SetDataObject((listBox.ItemsSource as ObservableCollection<StringObject>)[listBox.SelectedIndex].value);
         }
 
         private void listBox_MouseUp(object sender, MouseButtonEventArgs e)
