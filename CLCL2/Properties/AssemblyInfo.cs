@@ -8,7 +8,7 @@ using System.Windows;
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die einer Assembly zugeordnet sind.
 [assembly: AssemblyTitle("SimpleCLCL")]
-[assembly: AssemblyDescription("Simple clone of CLCL")]
+[assembly: AssemblyDescription("A simple multiclipboard")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Martin Muckel")]
 [assembly: AssemblyProduct("SimpleCLCL")]

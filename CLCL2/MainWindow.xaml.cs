@@ -50,6 +50,12 @@ namespace SimpleCLCL
             VM = new VM();
             DataContext = VM;
 
+            if (SimpleCLCL.Properties.Settings.Default.historyItems <= 0)
+                SimpleCLCL.Properties.Settings.Default.historyItems = 50;
+
+            VM.maxHistoryCount = SimpleCLCL.Properties.Settings.Default.historyItems;
+            
+
             if (SimpleCLCL.Properties.Settings.Default.clipboardHistory != null)
             {
                 foreach (String entry in SimpleCLCL.Properties.Settings.Default.clipboardHistory)
@@ -437,5 +443,13 @@ namespace SimpleCLCL
             VM.pinnedClipboardEntrys.Remove(s);
         }
 
+        private void slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (VM != null)
+            {
+                SimpleCLCL.Properties.Settings.Default.historyItems = VM.maxHistoryCount;
+                SimpleCLCL.Properties.Settings.Default.Save();
+            }
+        }
     }
 }

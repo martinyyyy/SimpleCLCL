@@ -748,6 +748,11 @@
                 <Expander x:Name="expander" Header="Help" Margin="0,0,0,8.92" d:LayoutOverrides="Height" Foreground="{DynamicResource Expander.Disabled.Arrow.Stroke}" Style="{DynamicResource ExpanderStyle1}">
                     <Grid Margin="5,0,0,0">
                         <StackPanel Orientation="Vertical" Margin="0" Background="{Binding Background, ElementName=grid1}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}">Number of Items =</TextBlock>
+                                <TextBlock TextAlignment="Center" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Text="{Binding maxHistoryCount}" Margin="3,0,0,0" Width="25" />
+                                <Slider x:Name="slider" SmallChange="1" Maximum="150" Minimum="20" Value="{Binding maxHistoryCount}" Width="130" Margin="10,0,0,0" ValueChanged="slider_ValueChanged"/>
+                            </StackPanel>
                             <TextBlock><Run Text="ALT + C" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" /><Run Text=" "/><Run Text=" = Switch To Pinned Entrys" /></TextBlock>
                             <TextBlock><Run Text="CTRL + C" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" /><Run Text=" "/><Run Text=" = Copy To Clipboard" /></TextBlock>
                             <TextBlock><Run Text="NEW " Foreground="Red" FontStyle="Italic" FontFamily="Segoe UI" FontSize="8"/><Run Text="Right Mouse" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" /><Run Text=" "/><Run Text=" = Open Textbox" /></TextBlock>

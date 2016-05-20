@@ -44,5 +44,17 @@ namespace SimpleCLCL.Properties {
                 this["pinnedClipboardHistory"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
+        public int historyItems {
+            get {
+                return ((int)(this["historyItems"]));
+            }
+            set {
+                this["historyItems"] = value;
+            }
+        }
     }
 }
