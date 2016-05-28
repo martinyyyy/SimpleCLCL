@@ -3,6 +3,7 @@ using NHotkey.Wpf;
 using System;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -87,31 +88,41 @@ namespace SimpleCLCL
             if (Clipboard.ContainsText())
             {
                 bool done = false;
-                for (int i = 0; i < 5 && done != true; i++)
+                for (int i = 0; i < 5 && !done; i++)
                 {
                     // Delay if clipboard still open by other app
-                    if (!done)
-                        await Task.Delay(20);
+                    await Task.Delay(20);
 
                     try
                     {
-                        string text = Clipboard.GetDataObject().GetData(DataFormats.UnicodeText).ToString();
+                        var clipboradData = Clipboard.GetDataObject();
 
-                        // dont put empty stuff in the history
-                        if (text.Trim().Length == 0)
-                            return;
-
-                        VM.ClipboardEntrys.Remove(VM.ClipboardEntrys.FirstOrDefault(x => x.Value == text));
-                        VM.ClipboardEntrys.Insert(0, new StringObject() { Value = text });
-
-                        if (VM.ClipboardEntrys.Count > VM.MaxHistoryCount)
+                        StringObject newObject = null;
+                        if (clipboradData?.GetDataPresent(DataFormats.Text) ?? false)
                         {
-                            VM.ClipboardEntrys.Remove(VM.ClipboardEntrys.Last());
+                            newObject = new StringObject()
+                            {
+                                Value = clipboradData.GetData(DataFormats.Text).ToString()
+                            };
+                        }
+                        
+                        if (newObject != null)
+                        {
+                            if (newObject.Value.Trim().Length == 0)
+                                return;
+
+                            VM.ClipboardEntrys.Remove(VM.ClipboardEntrys.FirstOrDefault(x => x.Value == newObject.Value));
+                            VM.ClipboardEntrys.Insert(0, newObject);
+
+                            if (VM.ClipboardEntrys.Count > VM.MaxHistoryCount)
+                            {
+                                VM.ClipboardEntrys.Remove(VM.ClipboardEntrys.Last());
+                            }
                         }
 
                         done = true;
                     }
-                    catch (System.Runtime.InteropServices.COMException)
+                    catch (COMException)
                     {
                         // Clipboard already opened
                     }
@@ -168,7 +179,7 @@ namespace SimpleCLCL
             foreach (var screen in Screen.AllScreens)
             {
                 // current screen
-                if (screen.Bounds.IntersectsWith(new System.Drawing.Rectangle((int) this.Left, (int) this.Top, 1, 1)))
+                if (screen.Bounds.IntersectsWith(new System.Drawing.Rectangle((int)this.Left, (int)this.Top, 1, 1)))
                 {
                     currScreen = screen;
                 }
@@ -393,7 +404,7 @@ namespace SimpleCLCL
             if (insert)
             {
                 await Task.Delay(250);
-                System.Windows.Forms.SendKeys.SendWait("^v");
+                SendKeys.SendWait("^v");
             }
         }
 
