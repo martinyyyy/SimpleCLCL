@@ -1,5 +1,5 @@
-﻿<SimpleCLCL:VM xmlns:SimpleCLCL="clr-namespace:SimpleCLCL" MaxHistoryCount="56">
-	<SimpleCLCL:VM.ClipboardEntrys>
+﻿<SimpleCLCL:ViewModel xmlns:SimpleCLCL="clr-namespace:SimpleCLCL" MaxHistoryCount="56">
+	<SimpleCLCL:ViewModel.ClipboardEntrys>
 		<SimpleCLCL:StringObject IsShort="True" ShortValue="Class aenewefwfe wef wef wef an wfe wf ewfef wewe fwe wfewef wfewef wefwefwe" Value="Aliquam wfefwe wwfe wef we w efefw nam sed vestibulum"/>
 		<SimpleCLCL:StringObject IsShort="False" ShortValue="Dis curae adipiscing nullam integer" Value="Mauris maecenas"/>
 		<SimpleCLCL:StringObject IsShort="True" ShortValue="Accumsan curabitur cras" Value="Donec praesent parturient"/>
@@ -10,5 +10,5 @@
 		<SimpleCLCL:StringObject IsShort="False" ShortValue="Vestibulum cursus faucibus dictum aliquet" Value="Duis facilisi nunc amet"/>
 		<SimpleCLCL:StringObject IsShort="True" ShortValue="Nulla arcu diam dignissim habitant" Value="Blandit ante vestibulum mus"/>
 		<SimpleCLCL:StringObject IsShort="False" ShortValue="Inceptos non interdum parturient per" Value="Adipiscing nec"/>
-	</SimpleCLCL:VM.ClipboardEntrys>
-</SimpleCLCL:VM>
+	</SimpleCLCL:ViewModel.ClipboardEntrys>
+</SimpleCLCL:ViewModel>

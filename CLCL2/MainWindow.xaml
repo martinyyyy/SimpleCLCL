@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="SimpleCLCL" AllowsTransparency="True" Width="330" MaxHeight="700" Deactivated="Window_Deactivated" Closing="Window_Closing" WindowStyle="None" KeyUp="Window_KeyUp" ResizeMode="NoResize" SizeToContent="Height" Background="{x:Null}" FontFamily="Segoe UI Semilight" Visibility="Visible" Foreground="{DynamicResource DisabledForegroundBrush}" Loaded="Window_Loaded">
     <Window.Resources>
-        <local:VM x:Key="ViewModel" />
+        <local:ViewModel x:Key="ViewModel" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <DataTemplate x:Key="StringObjectTemplate">
             <Grid>

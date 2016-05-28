@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 
 namespace SimpleCLCL
 {
-    public class VM : INotifyPropertyChanged
+    public class ViewModel : INotifyPropertyChanged
     {
         private string _currentSearch = "";
 
@@ -137,7 +137,7 @@ namespace SimpleCLCL
             }
         }
 
-        public String CurrentVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString();
+        public string CurrentVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
         #region INotifyPropertyChanged
 
