@@ -1,15 +1,21 @@
 ﻿using NHotkey;
 using NHotkey.Wpf;
 using System;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using CheckBox = System.Windows.Controls.CheckBox;
+using Clipboard = System.Windows.Clipboard;
+using DataFormats = System.Windows.DataFormats;
+using KeyEventArgs = System.Windows.Input.KeyEventArgs;
+using MessageBox = System.Windows.MessageBox;
+using ToolTip = System.Windows.Controls.ToolTip;
 
 namespace SimpleCLCL
 {
@@ -17,7 +23,7 @@ namespace SimpleCLCL
     {
         public event EventHandler<HotkeyEventArgs> HotKeyPressed;
 
-        public VM VM => grid.DataContext as VM;
+        public VM VM => MainGrid.DataContext as VM;
 
         private ToolTip toolTip;
         private bool _forceTooltip = false;
@@ -70,7 +76,7 @@ namespace SimpleCLCL
 
         private void VM_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "searchVisible" && !VM.IsSearchVisible)
+            if (e.PropertyName == nameof(VM.IsSearchVisible) && !VM.IsSearchVisible)
             {
                 FocusItem();
             }
@@ -99,7 +105,9 @@ namespace SimpleCLCL
                         VM.ClipboardEntrys.Insert(0, new StringObject() { Value = text });
 
                         if (VM.ClipboardEntrys.Count > VM.MaxHistoryCount)
+                        {
                             VM.ClipboardEntrys.Remove(VM.ClipboardEntrys.Last());
+                        }
 
                         done = true;
                     }
@@ -134,12 +142,16 @@ namespace SimpleCLCL
 
         private void ToggleBetweenPinnedAndUnpinned(bool forceUnpinned = false)
         {
-            if (forceUnpinned || listBox.ItemsSource == VM.PinnedClipboardEntrys)
-                listBox.ItemsSource = VM.ClipboardEntrys;
+            if (forceUnpinned || CLipboardEntryListBox.ItemsSource == VM.PinnedClipboardEntrys)
+            {
+                CLipboardEntryListBox.ItemsSource = VM.ClipboardEntrys;
+            }
             else
-                listBox.ItemsSource = VM.PinnedClipboardEntrys;
+            {
+                CLipboardEntryListBox.ItemsSource = VM.PinnedClipboardEntrys;
+            }
 
-            VM.IsPinningActive = listBox.ItemsSource == VM.PinnedClipboardEntrys;
+            VM.IsPinningActive = CLipboardEntryListBox.ItemsSource == VM.PinnedClipboardEntrys;
 
             FocusItem();
         }
@@ -151,13 +163,15 @@ namespace SimpleCLCL
             this.Left = point.X + 10;
             this.Top = point.Y - 10;
 
-            System.Windows.Forms.Screen currScreen = System.Windows.Forms.Screen.PrimaryScreen;
+            var currScreen = Screen.PrimaryScreen;
 
-            foreach (System.Windows.Forms.Screen screen in System.Windows.Forms.Screen.AllScreens)
+            foreach (var screen in Screen.AllScreens)
             {
                 // current screen
-                if (screen.Bounds.IntersectsWith(new System.Drawing.Rectangle((int)this.Left, (int)this.Top, 1, 1)))
+                if (screen.Bounds.IntersectsWith(new System.Drawing.Rectangle((int) this.Left, (int) this.Top, 1, 1)))
+                {
                     currScreen = screen;
+                }
             }
 
             if (this.Top + this.Height > currScreen.Bounds.Height)
@@ -167,14 +181,14 @@ namespace SimpleCLCL
             this.Show();
             this.Activate();
 
-            listBox.SelectedIndex = 0;
+            CLipboardEntryListBox.SelectedIndex = 0;
             FocusItem();
 
-            Storyboard sb = this.FindResource("showWindow") as Storyboard;
+            Storyboard sb = this.FindResource("ShowWindow") as Storyboard;
 
             sb.Completed += (sender, e) =>
             {
-                listBox.KeyUp += ListBox_KeyUp;
+                CLipboardEntryListBox.KeyUp += CLipboardEntryListBoxKeyUp;
             };
 
             sb.Begin();
@@ -182,31 +196,31 @@ namespace SimpleCLCL
 
         private void FocusItem()
         {
-            listBox.UpdateLayout(); // Pre-generates item containers
+            CLipboardEntryListBox.UpdateLayout(); // Pre-generates item containers
 
-            if (listBox.SelectedIndex == -1)
+            if (CLipboardEntryListBox.SelectedIndex == -1)
             {
-                listBox.SelectedIndex = 0;
+                CLipboardEntryListBox.SelectedIndex = 0;
             }
 
             ListBoxItem listBoxItem = GetCurrentListboxItem();
             if (listBoxItem != null)
             {
                 listBoxItem.Focus();
-                listBox.ScrollIntoView(listBox.Items[0]);
+                CLipboardEntryListBox.ScrollIntoView(CLipboardEntryListBox.Items[0]);
             }
         }
 
         private ListBoxItem GetCurrentListboxItem()
         {
-            if (listBox.SelectedIndex == -1)
+            if (CLipboardEntryListBox.SelectedIndex == -1)
             {
-                listBox.SelectedIndex = 0;
+                CLipboardEntryListBox.SelectedIndex = 0;
             }
 
-            return (ListBoxItem)listBox
+            return (ListBoxItem)CLipboardEntryListBox
                 .ItemContainerGenerator
-                .ContainerFromItem(listBox.SelectedItem);
+                .ContainerFromItem(CLipboardEntryListBox.SelectedItem);
         }
 
         private TChild FindVisualChild<TChild>(DependencyObject obj) where TChild : DependencyObject
@@ -237,7 +251,7 @@ namespace SimpleCLCL
         {
             InputTextPopup.IsOpen = false;
 
-            listBox.KeyUp -= ListBox_KeyUp;
+            CLipboardEntryListBox.KeyUp -= CLipboardEntryListBoxKeyUp;
             if (VM == null)
             {
                 this.Hide();
@@ -246,7 +260,7 @@ namespace SimpleCLCL
 
             VM.CurrentSearch = "";
 
-            Storyboard sb = this.FindResource("hideWindow") as Storyboard;
+            Storyboard sb = this.FindResource("HideWindow") as Storyboard;
             sb.Begin();
             sb.Completed += (sender, e) =>
             {
@@ -290,7 +304,7 @@ namespace SimpleCLCL
             }
         }
 
-        private void ListBox_KeyUp(object sender, KeyEventArgs e)
+        private void CLipboardEntryListBoxKeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Right)
             {
@@ -319,10 +333,14 @@ namespace SimpleCLCL
             }
             else if (e.Key == Key.LeftShift)
             {
-                if (listBox.SelectedIndex + 1 >= listBox.Items.Count)
-                    listBox.SelectedIndex = 0;
+                if (CLipboardEntryListBox.SelectedIndex + 1 >= CLipboardEntryListBox.Items.Count)
+                {
+                    CLipboardEntryListBox.SelectedIndex = 0;
+                }
                 else
-                    listBox.SelectedIndex++;
+                {
+                    CLipboardEntryListBox.SelectedIndex++;
+                }
 
                 e.Handled = true;
 
@@ -330,40 +348,44 @@ namespace SimpleCLCL
             }
             else if (e.Key == Key.Tab)
             {
-                if (listBox.SelectedIndex - 1 < 0)
-                    listBox.SelectedIndex = listBox.Items.Count - 1;
+                if (CLipboardEntryListBox.SelectedIndex - 1 < 0)
+                {
+                    CLipboardEntryListBox.SelectedIndex = CLipboardEntryListBox.Items.Count - 1;
+                }
                 else
-                    listBox.SelectedIndex--;
+                {
+                    CLipboardEntryListBox.SelectedIndex--;
+                }
 
                 e.Handled = true;
 
                 FocusItem();
             }
-            else if (!searchBox.IsVisible && Keyboard.Modifiers.HasFlag(ModifierKeys.None) && e.Key.ToString().Length == 1 && e.Key != Key.C) // is a char on keyboard and we ignore C
+            else if (!SearchBox.IsVisible && Keyboard.Modifiers.HasFlag(ModifierKeys.None) && e.Key.ToString().Length == 1 && e.Key != Key.C) // is a char on keyboard and we ignore C
             {
                 VM.CurrentSearch = e.Key.ToString();
-                searchBox.Focus();
-                searchBox.CaretIndex = 1;
+                SearchBox.Focus();
+                SearchBox.CaretIndex = 1;
             }
         }
 
         private void DeleteCurrentEntry()
         {
-            if (listBox.SelectedIndex != -1)
+            if (CLipboardEntryListBox.SelectedIndex != -1)
             {
-                (listBox.ItemsSource as ObservableCollection<StringObject>).RemoveAt(listBox.SelectedIndex);
+                VM.ClipboardEntrys.RemoveAt(CLipboardEntryListBox.SelectedIndex);
             }
         }
 
         private async void PutInClipboard(bool insert = true, bool fromListbox = true, String text = "")
         {
-            if (fromListbox && listBox.SelectedIndex == -1) return;
+            if (fromListbox && CLipboardEntryListBox.SelectedIndex == -1) return;
 
             HideWindow();
 
             if (fromListbox)
             {
-                text = (listBox.ItemsSource as ObservableCollection<StringObject>)[listBox.SelectedIndex].Value;
+                text = VM.ClipboardEntrys[CLipboardEntryListBox.SelectedIndex].Value;
             }
 
             Clipboard.SetDataObject(text);
@@ -389,10 +411,10 @@ namespace SimpleCLCL
 
         private void OpenInputText()
         {
-            if (listBox.SelectedIndex == -1) return;
+            if (CLipboardEntryListBox.SelectedIndex == -1) return;
 
             InputTextPopup.IsOpen = true;
-            VM.CurrentSelectedText = (listBox.ItemsSource as ObservableCollection<StringObject>)[listBox.SelectedIndex].Value;
+            VM.CurrentSelectedText = VM.ClipboardEntrys[CLipboardEntryListBox.SelectedIndex].Value;
         }
 
         private void SearchBox_KeyUp(object sender, KeyEventArgs e)
@@ -404,11 +426,11 @@ namespace SimpleCLCL
             // TWO WAY BINDING KILLS EVERYTHING -> Ugly but works this way
             else if (VM.IsPinningActive)
             {
-                listBox.ItemsSource = VM.PinnedClipboardEntrys;
+                CLipboardEntryListBox.ItemsSource = VM.PinnedClipboardEntrys;
             }
             else
             {
-                listBox.ItemsSource = VM.ClipboardEntrys;
+                CLipboardEntryListBox.ItemsSource = VM.ClipboardEntrys;
             }
         }
 
@@ -436,39 +458,39 @@ namespace SimpleCLCL
             {
                 InitTooltip();
                 toolTip.IsOpen = true;
-                toolTip.Content = ((StringObject)listBox.SelectedItem).Value;
+                toolTip.Content = ((StringObject)CLipboardEntryListBox.SelectedItem).Value;
                 toolTip.PlacementTarget = listBoxItem;
             }
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            SimpleCLCL.Properties.Settings.Default.clipboardHistory = new System.Collections.Specialized.StringCollection();
-            SimpleCLCL.Properties.Settings.Default.Save();
+            Properties.Settings.Default.clipboardHistory = new System.Collections.Specialized.StringCollection();
+            Properties.Settings.Default.Save();
 
             VM.ClipboardEntrys.Clear();
         }
 
         private void PinChbx_Checked(object sender, RoutedEventArgs e)
         {
-            StringObject s = (sender as CheckBox).DataContext as StringObject;
-            VM.ClipboardEntrys.Remove(s);
-            VM.PinnedClipboardEntrys.Insert(0, s);
+            var stringObject = (sender as CheckBox).DataContext as StringObject;
+            VM.ClipboardEntrys.Remove(stringObject);
+            VM.PinnedClipboardEntrys.Insert(0, stringObject);
         }
 
         private void PinChbx_Unchecked(object sender, RoutedEventArgs e)
         {
-            StringObject s = (sender as CheckBox).DataContext as StringObject;
-            VM.ClipboardEntrys.Insert(0, s);
-            VM.PinnedClipboardEntrys.Remove(s);
+            var stringObject = (sender as CheckBox).DataContext as StringObject;
+            VM.ClipboardEntrys.Insert(0, stringObject);
+            VM.PinnedClipboardEntrys.Remove(stringObject);
         }
 
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (VM != null)
             {
-                SimpleCLCL.Properties.Settings.Default.historyItems = VM.MaxHistoryCount;
-                SimpleCLCL.Properties.Settings.Default.Save();
+                Properties.Settings.Default.historyItems = VM.MaxHistoryCount;
+                Properties.Settings.Default.Save();
             }
         }
     }
