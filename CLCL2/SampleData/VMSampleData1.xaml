@@ -1,14 +1,14 @@
-﻿<SimpleCLCL:VM xmlns:SimpleCLCL="clr-namespace:SimpleCLCL" maxHistoryCount="56">
-	<SimpleCLCL:VM.clipboardEntrys>
-		<SimpleCLCL:StringObject isShort="True" shortValue="Class aenewefwfe wef wef wef an wfe wf ewfef wewe fwe wfewef wfewef wefwefwe" value="Aliquam wfefwe wwfe wef we w efefw nam sed vestibulum"/>
-		<SimpleCLCL:StringObject isShort="False" shortValue="Dis curae adipiscing nullam integer" value="Mauris maecenas"/>
-		<SimpleCLCL:StringObject isShort="True" shortValue="Accumsan curabitur cras" value="Donec praesent parturient"/>
-		<SimpleCLCL:StringObject isShort="False" shortValue="Vestibulum hac adipiscing leo" value="Phasellus est vestibulum"/>
-		<SimpleCLCL:StringObject isShort="True" shortValue="Parturient lorem aptent" value="Etiam fusce"/>
-		<SimpleCLCL:StringObject isShort="False" shortValue="Vestibulum aliquam morbi" value="Vestibulum bibendum quisque vivamus dictumst"/>
-		<SimpleCLCL:StringObject isShort="True" shortValue="Congue parturient convallis" value="Eleifend auctor consequat adipiscing"/>
-		<SimpleCLCL:StringObject isShort="False" shortValue="Vestibulum cursus faucibus dictum aliquet" value="Duis facilisi nunc amet"/>
-		<SimpleCLCL:StringObject isShort="True" shortValue="Nulla arcu diam dignissim habitant" value="Blandit ante vestibulum mus"/>
-		<SimpleCLCL:StringObject isShort="False" shortValue="Inceptos non interdum parturient per" value="Adipiscing nec"/>
-	</SimpleCLCL:VM.clipboardEntrys>
+﻿<SimpleCLCL:VM xmlns:SimpleCLCL="clr-namespace:SimpleCLCL" MaxHistoryCount="56">
+	<SimpleCLCL:VM.ClipboardEntrys>
+		<SimpleCLCL:StringObject IsShort="True" ShortValue="Class aenewefwfe wef wef wef an wfe wf ewfef wewe fwe wfewef wfewef wefwefwe" Value="Aliquam wfefwe wwfe wef we w efefw nam sed vestibulum"/>
+		<SimpleCLCL:StringObject IsShort="False" ShortValue="Dis curae adipiscing nullam integer" Value="Mauris maecenas"/>
+		<SimpleCLCL:StringObject IsShort="True" ShortValue="Accumsan curabitur cras" Value="Donec praesent parturient"/>
+		<SimpleCLCL:StringObject IsShort="False" ShortValue="Vestibulum hac adipiscing leo" Value="Phasellus est vestibulum"/>
+		<SimpleCLCL:StringObject IsShort="True" ShortValue="Parturient lorem aptent" Value="Etiam fusce"/>
+		<SimpleCLCL:StringObject IsShort="False" ShortValue="Vestibulum aliquam morbi" Value="Vestibulum bibendum quisque vivamus dictumst"/>
+		<SimpleCLCL:StringObject IsShort="True" ShortValue="Congue parturient convallis" Value="Eleifend auctor consequat adipiscing"/>
+		<SimpleCLCL:StringObject IsShort="False" ShortValue="Vestibulum cursus faucibus dictum aliquet" Value="Duis facilisi nunc amet"/>
+		<SimpleCLCL:StringObject IsShort="True" ShortValue="Nulla arcu diam dignissim habitant" Value="Blandit ante vestibulum mus"/>
+		<SimpleCLCL:StringObject IsShort="False" ShortValue="Inceptos non interdum parturient per" Value="Adipiscing nec"/>
+	</SimpleCLCL:VM.ClipboardEntrys>
 </SimpleCLCL:VM>

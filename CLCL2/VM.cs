@@ -1,20 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SimpleCLCL
 {
     public class VM : INotifyPropertyChanged
     {
-        string _currentSearch = "";
-        public string currentSearch
+        private string _currentSearch = "";
+
+        public string CurrentSearch
         {
             get
             {
@@ -25,15 +22,18 @@ namespace SimpleCLCL
                 if (_currentSearch != value)
                 {
                     _currentSearch = value;
-                    RaisePropertyChanged("currentSearch");
-                    RaisePropertyChanged("clipboardEntrys");
-                    RaisePropertyChanged("searchVisible");
+                    RaisePropertyChanged();
+                    // ReSharper disable once ExplicitCallerInfoArgument
+                    RaisePropertyChanged(nameof(ClipboardEntrys));
+                    // ReSharper disable once ExplicitCallerInfoArgument
+                    RaisePropertyChanged(nameof(IsSearchVisible));
                 }
             }
         }
 
-        string _currentSelectedText;
-        public string currentSelectedText
+        private string _currentSelectedText;
+
+        public string CurrentSelectedText
         {
             get
             {
@@ -44,84 +44,84 @@ namespace SimpleCLCL
                 if (_currentSelectedText != value)
                 {
                     _currentSelectedText = value;
-                    RaisePropertyChanged("currentSelectedText");
+                    RaisePropertyChanged();
                 }
             }
         }
 
+        public bool IsSearchVisible => CurrentSearch != "";
 
-        public bool searchVisible
+        private bool _isPinningActive;
+
+        public bool IsPinningActive
         {
             get
             {
-                return currentSearch != "";
-            }
-        }
-
-        bool _pinnedActive = false;
-        public bool pinnedActive
-        {
-            get
-            {
-                return _pinnedActive;
+                return _isPinningActive;
             }
             set
             {
-                if (_pinnedActive != value)
+                if (_isPinningActive != value)
                 {
-                    _pinnedActive = value;
-                    RaisePropertyChanged("pinnedActive");
+                    _isPinningActive = value;
+                    RaisePropertyChanged();
                 }
             }
         }
 
+        private ObservableCollection<StringObject> _clipboardEntrys = new ObservableCollection<StringObject>();
 
-        ObservableCollection<StringObject> _clipboardEntrys = new ObservableCollection<StringObject>();
-        public ObservableCollection<StringObject> clipboardEntrys
+        public ObservableCollection<StringObject> ClipboardEntrys
         {
             get
             {
-                if (currentSearch != "")
+                if (CurrentSearch != "")
                 {
-                    return new ObservableCollection<StringObject>(_clipboardEntrys.Where(x => x.value.ToLower().Contains(currentSearch.ToLower())));
+                    return new ObservableCollection<StringObject>(_clipboardEntrys.Where(x => x.Value.ToLower().Contains(CurrentSearch.ToLower())));
                 }
                 else
+                {
                     return _clipboardEntrys;
+                }
             }
             set
             {
                 if (_clipboardEntrys != value)
                 {
                     _clipboardEntrys = value;
-                    RaisePropertyChanged("clipboardEntrys");
+                    RaisePropertyChanged();
                 }
             }
         }
 
-        ObservableCollection<StringObject> _pinnedClipboardEntrys = new ObservableCollection<StringObject>();
-        public ObservableCollection<StringObject> pinnedClipboardEntrys
+        private ObservableCollection<StringObject> _pinnedClipboardEntrys = new ObservableCollection<StringObject>();
+
+        public ObservableCollection<StringObject> PinnedClipboardEntrys
         {
             get
             {
-                if (currentSearch != "")
+                if (CurrentSearch != "")
                 {
-                    return new ObservableCollection<StringObject>(_pinnedClipboardEntrys.Where(x => x.value.ToLower().Contains(currentSearch.ToLower())));
+                    return new ObservableCollection<StringObject>(_pinnedClipboardEntrys.Where(x => x.Value.ToLower().Contains(CurrentSearch.ToLower())));
                 }
                 else
+                {
                     return _pinnedClipboardEntrys;
+                }
             }
             set
             {
                 if (_clipboardEntrys != value)
                 {
                     _pinnedClipboardEntrys = value;
-                    RaisePropertyChanged("pinnedClipboardEntrys");
+                    RaisePropertyChanged();
                 }
             }
         }
 
-        int _maxHistoryCount = 50;
-        public int maxHistoryCount
+        private int _maxHistoryCount = 50;
+
+        public int MaxHistoryCount
         {
             get
             {
@@ -132,24 +132,22 @@ namespace SimpleCLCL
                 if (_maxHistoryCount != value)
                 {
                     _maxHistoryCount = value;
-                    RaisePropertyChanged("maxHistoryCount");
+                    RaisePropertyChanged();
                 }
             }
         }
 
-        public String currentVersion {
-            get
-            {
-                return Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            }
-        }
+        public String CurrentVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
+        #region INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;
+
         protected virtual void RaisePropertyChanged([CallerMemberName] string propertyName = null)
         {
-            var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        #endregion INotifyPropertyChanged
     }
 }

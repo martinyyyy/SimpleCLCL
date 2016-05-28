@@ -1,25 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace SimpleCLCL
 {
-    class MouseCapture
+    internal class MouseCapture
     {
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern bool GetCursorPos(ref Win32Point pt);
+        private static extern bool GetCursorPos(ref Win32Point pt);
 
         [StructLayout(LayoutKind.Sequential)]
-        internal struct Win32Point
+        private struct Win32Point
         {
             public Int32 X;
             public Int32 Y;
         };
+
         public static Point GetMousePosition()
         {
             Win32Point w32Mouse = new Win32Point();

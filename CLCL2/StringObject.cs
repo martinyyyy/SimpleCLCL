@@ -1,34 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+﻿using System.Text.RegularExpressions;
 
 namespace SimpleCLCL
 {
     public class StringObject
     {
-        public string value { get; set; }
-        public string shortValue
+        public string Value { get; set; }
+        public string ShortValue
         {
             get
             {
-                String v = Regex.Replace(value, @"\t|\n|\r", "");
-                v = v.Trim();
-                return v;
+                var value = Regex.Replace(Value, @"\t|\n|\r", "");
+                value = value.Trim();
+                return value;
             }
         }
 
-        public bool pinned
-        { get; set; }
+        public bool IsPinned { get; set; }
 
-        public bool isShort
-        {
-            get
-            {
-                return value.Length > 40;
-            }
-        }
+        public bool IsShort => Value.Length > 40;
     }
 }

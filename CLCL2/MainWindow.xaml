@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SimpleCLCL"
         mc:Ignorable="d"
-        Title="SimpleCLCL" AllowsTransparency="True" Width="330" MaxHeight="700" Deactivated="Window_Deactivated" Closing="Window_Closing" WindowStyle="None" KeyUp="Window_KeyUp" ResizeMode="NoResize" SizeToContent="Height" Background="{x:Null}" FontFamily="Segoe UI Semilight" Visibility="Visible" Foreground="{DynamicResource DisabledForegroundBrush}">
+        Title="SimpleCLCL" AllowsTransparency="True" Width="330" MaxHeight="700" Deactivated="Window_Deactivated" Closing="Window_Closing" WindowStyle="None" KeyUp="Window_KeyUp" ResizeMode="NoResize" SizeToContent="Height" Background="{x:Null}" FontFamily="Segoe UI Semilight" Visibility="Visible" Foreground="{DynamicResource DisabledForegroundBrush}" Loaded="Window_Loaded">
     <Window.Resources>
+        <local:VM x:Key="ViewModel" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <DataTemplate x:Key="StringObjectTemplate">
             <Grid>
@@ -15,12 +16,12 @@
                     <ColumnDefinition Width="121*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.ToolTip>
-                    <TextBlock Text="{Binding value}"></TextBlock>
+                    <TextBlock Text="{Binding Value}"></TextBlock>
                 </Grid.ToolTip>
-                <CheckBox x:Name="pinChbx" HorizontalAlignment="Left" Margin="0" Background="{x:Null}" VerticalAlignment="Center" Padding="5,0,0,0" RenderTransformOrigin="0.5,0.5" Opacity="0.3" Foreground="White" IsChecked="{Binding pinned}" Style="{DynamicResource CheckBoxStyle1}" Checked="pinChbx_Checked" Unchecked="pinChbx_Unchecked" ToolTip="Pin item">
+                <CheckBox x:Name="pinChbx" HorizontalAlignment="Left" Margin="0" Background="{x:Null}" VerticalAlignment="Center" Padding="5,0,0,0" RenderTransformOrigin="0.5,0.5" Opacity="0.3" Foreground="White" IsChecked="{Binding IsPinned}" Style="{DynamicResource CheckBoxStyle1}" Checked="PinChbx_Checked" Unchecked="PinChbx_Unchecked" ToolTip="Pin item">
                 </CheckBox>
-                <TextBlock Text="{Binding shortValue}" Margin="0,0,10,0" Grid.Column="1"/>
-                <TextBlock Text="..." Visibility="{Binding isShort, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Right" Width="Auto" FlowDirection="RightToLeft" Background="{x:Null}" Margin="0" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Grid.Column="1"/>
+                <TextBlock Text="{Binding ShortValue}" Margin="0,0,10,0" Grid.Column="1"/>
+                <TextBlock Text="..." Visibility="{Binding IsShort, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Right" Width="Auto" FlowDirection="RightToLeft" Background="{x:Null}" Margin="0" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Grid.Column="1"/>
             </Grid>
         </DataTemplate>
         <Storyboard x:Key="showWindow">
@@ -711,7 +712,7 @@
             <BeginStoryboard Storyboard="{StaticResource hideWindow}"/>
         </EventTrigger>
     </Window.Triggers>
-    <Grid x:Name="grid" d:DataContext="{d:DesignData /SampleData/VMSampleData1.xaml}" Margin="0" RenderTransformOrigin="0.5,0.5">
+    <Grid x:Name="grid" DataContext="{StaticResource ViewModel}" d:DataContext="{d:DesignData /SampleData/VMSampleData1.xaml}" Margin="0" RenderTransformOrigin="0.5,0.5">
         <Grid.RenderTransform>
             <TransformGroup>
                 <ScaleTransform/>
@@ -728,9 +729,9 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <TextBox x:Name="searchBox" Margin="5" TextWrapping="Wrap"  Text="{Binding currentSearch, Mode=TwoWay,  UpdateSourceTrigger=PropertyChanged}" Foreground="Black" Background="#FF9E9E9E" Visibility="{Binding searchVisible, Converter={StaticResource BooleanToVisibilityConverter}}" KeyUp="searchBox_KeyUp" />
-            <Label Content="Pinned Entrys" Background="{x:Null}" Foreground="#FFF3FF00" HorizontalContentAlignment="Center" HorizontalAlignment="Center" FontFamily="Segoe UI Light" FontSize="16" Padding="5,5,5,0" Visibility="{Binding pinnedActive, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-            <ListBox x:Name="listBox" ItemsSource="{Binding clipboardEntrys}" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseUp="listBox_MouseUp" ItemTemplate="{DynamicResource StringObjectTemplate}" BorderBrush="{x:Null}" FontFamily="Segoe UI" Foreground="White" Padding="2,10,10,10" FontSize="14.667" Background="{x:Null}" Grid.Row="2" SelectionChanged="listBox_SelectionChanged" Style="{DynamicResource ListBoxStyle1}">
+            <TextBox x:Name="searchBox" Margin="5" TextWrapping="Wrap"  Text="{Binding CurrentSearch, Mode=TwoWay,  UpdateSourceTrigger=PropertyChanged}" Foreground="Black" Background="#FF9E9E9E" Visibility="{Binding IsSearchVisible, Converter={StaticResource BooleanToVisibilityConverter}}" KeyUp="SearchBox_KeyUp" />
+            <Label Content="Pinned Entrys" Background="{x:Null}" Foreground="#FFF3FF00" HorizontalContentAlignment="Center" HorizontalAlignment="Center" FontFamily="Segoe UI Light" FontSize="16" Padding="5,5,5,0" Visibility="{Binding IsPinningActive, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            <ListBox x:Name="listBox" ItemsSource="{Binding ClipboardEntrys}" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseUp="ListBox_MouseUp" ItemTemplate="{DynamicResource StringObjectTemplate}" BorderBrush="{x:Null}" FontFamily="Segoe UI" Foreground="White" Padding="2,10,10,10" FontSize="14.667" Background="{x:Null}" Grid.Row="2" SelectionChanged="ListBox_SelectionChanged" Style="{DynamicResource ListBoxStyle1}">
                 <ListBox.Effect>
                     <DropShadowEffect Opacity="0.5"/>
                 </ListBox.Effect>
@@ -750,8 +751,8 @@
                         <StackPanel Orientation="Vertical" Margin="0" Background="{Binding Background, ElementName=grid1}">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}">Number of Items =</TextBlock>
-                                <TextBlock TextAlignment="Center" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Text="{Binding maxHistoryCount}" Margin="3,0,0,0" Width="25" />
-                                <Slider x:Name="slider" SmallChange="1" Maximum="150" Minimum="20" Value="{Binding maxHistoryCount}" Width="130" Margin="10,0,0,0" ValueChanged="slider_ValueChanged"/>
+                                <TextBlock TextAlignment="Center" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Text="{Binding MaxHistoryCount}" Margin="3,0,0,0" Width="25" />
+                                <Slider x:Name="slider" SmallChange="1" Maximum="150" Minimum="20" Value="{Binding MaxHistoryCount}" Width="130" Margin="10,0,0,0" ValueChanged="Slider_ValueChanged"/>
                             </StackPanel>
                             <TextBlock><Run Text="ALT + C" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" /><Run Text=" "/><Run Text=" = Switch To Pinned Entrys" /></TextBlock>
                             <TextBlock><Run Text="CTRL + C" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" /><Run Text=" "/><Run Text=" = Copy To Clipboard" /></TextBlock>
@@ -766,13 +767,13 @@
                         </StackPanel>
                     </Grid>
                 </Expander>
-                <Button x:Name="deleteButton" Content="Clear History" Background="{x:Null}" BorderBrush="#FFF30C0C" Foreground="#FFF30C0C" HorizontalAlignment="Right" Margin="0,0,5,0" VerticalAlignment="Top" Padding="3,1" Grid.ColumnSpan="2" Click="deleteButton_Click"/>
-                <TextBlock Grid.Column="1" VerticalAlignment="Bottom" FontSize="8" Margin="0,0,5,0"><Run Text="v"/><Run Text="{Binding currentVersion, Mode=OneTime}" /></TextBlock>
+                <Button x:Name="deleteButton" Content="Clear History" Background="{x:Null}" BorderBrush="#FFF30C0C" Foreground="#FFF30C0C" HorizontalAlignment="Right" Margin="0,0,5,0" VerticalAlignment="Top" Padding="3,1" Grid.ColumnSpan="2" Click="DeleteButton_Click"/>
+                <TextBlock Grid.Column="1" VerticalAlignment="Bottom" FontSize="8" Margin="0,0,5,0"><Run Text="v"/><Run Text="{Binding CurrentVersion, Mode=OneTime}" /></TextBlock>
             </Grid>
         </Grid>
         <Popup Name="InputTextPopup" HorizontalAlignment="Left" VerticalAlignment="Top" IsOpen="False" Placement="Mouse">
             <StackPanel>
-                <TextBox Text="{Binding currentSelectedText}"  />
+                <TextBox Text="{Binding CurrentSelectedText}"  />
             </StackPanel>
         </Popup>
     </Grid>
