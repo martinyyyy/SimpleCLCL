@@ -27,7 +27,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <InstallUrl>https://simpleclcl.codeplex.com/releases/clickonce/</InstallUrl>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.6.0.%2a</ApplicationVersion>
+    <ApplicationVersion>1.6.1.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>

@@ -40,13 +40,7 @@ namespace SimpleCLCL
                 MessageBox.Show("Something is blocking the ALT+C Hotkey. Maybe SimpleCLCL is already running? Closing SimpleCLCL now.");
                 this.Close();
             }
-            HideWindow();
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            ClipboardNotification.ClipboardUpdate += ClipboardNotification_ClipboardUpdate;
-
+            
             if (Properties.Settings.Default.historyItems <= 0)
             {
                 Properties.Settings.Default.historyItems = 50;
@@ -69,6 +63,13 @@ namespace SimpleCLCL
                     ViewModel.PinnedClipboardEntrys.Add(new StringObject() { Value = entry, IsPinned = true });
                 }
             }
+
+            HideWindow();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            ClipboardNotification.ClipboardUpdate += ClipboardNotification_ClipboardUpdate;           
 
             ViewModel.PropertyChanged += VM_PropertyChanged;
         }
