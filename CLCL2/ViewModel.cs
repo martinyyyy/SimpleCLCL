@@ -31,6 +31,24 @@ namespace SimpleCLCL
             }
         }
 
+        bool _Startup;
+        public bool Startup
+        {
+            get
+            {
+                return _Startup;
+            }
+            set
+            {
+                if (_Startup != value)
+                {
+                    _Startup = value;
+                    RaisePropertyChanged("Startup");
+                }
+            }
+        }
+
+
         private string _currentSelectedText;
 
         public string CurrentSelectedText

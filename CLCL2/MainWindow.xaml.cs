@@ -1,7 +1,9 @@
-﻿using NHotkey;
+﻿using Microsoft.Win32;
+using NHotkey;
 using NHotkey.Wpf;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -65,6 +67,17 @@ namespace SimpleCLCL
             }
 
             HideWindow();
+            CheckStartup();
+        }
+
+        private void CheckStartup()
+        {
+            // THX @ http://stackoverflow.com/a/8695121
+            // The path to the key where Windows looks for startup applications
+            RegistryKey rkApp = Registry.CurrentUser.OpenSubKey(
+                                @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true);
+
+            ViewModel.Startup = rkApp.GetValue("SimpleCLCL") != null;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -392,12 +405,12 @@ namespace SimpleCLCL
             if (fromListbox && CLipboardEntryListBox.SelectedIndex == -1)
                 return;
 
-            HideWindow();
-
             if (fromListbox)
             {
                 text = ViewModel.ClipboardEntrys[CLipboardEntryListBox.SelectedIndex].Value;
             }
+
+            HideWindow();
 
             Clipboard.SetDataObject(text);
 
@@ -506,6 +519,30 @@ namespace SimpleCLCL
                 Properties.Settings.Default.historyItems = ViewModel.MaxHistoryCount;
                 Properties.Settings.Default.Save();
             }
+        }
+
+        private void StartupChk_Checked(object sender, RoutedEventArgs e)
+        {
+            setAutostart(true);
+        }
+
+        private void StartupChk_Unchecked(object sender, RoutedEventArgs e)
+        {
+            setAutostart(false);
+        }
+
+        private void setAutostart(bool set)
+        {
+            RegistryKey rkApp = Registry.CurrentUser.OpenSubKey(
+                               @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true);
+
+            string startPath = Environment.GetFolderPath(Environment.SpecialFolder.Programs)
+                               + @"\SimpleCLCL\SimpleCLCL.appref-ms";
+            if(set)
+                rkApp.SetValue("SimpleCLCL", startPath);
+            else
+                rkApp.DeleteValue("SimpleCLCL");
+
         }
     }
 }
