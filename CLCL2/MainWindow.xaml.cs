@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -47,8 +48,9 @@ namespace SimpleCLCL
             {
                 Properties.Settings.Default.historyItems = 50;
             }
-
+            
             ViewModel.MaxHistoryCount = Properties.Settings.Default.historyItems;
+            Slider.ValueChanged += Slider_ValueChanged;
 
             if (Properties.Settings.Default.clipboardHistory != null)
             {
@@ -543,6 +545,26 @@ namespace SimpleCLCL
             else
                 rkApp.DeleteValue("SimpleCLCL");
 
+        }
+
+        private void CandInsertBtn_Click(object sender, RoutedEventArgs e)
+        {
+            PutInClipboard(true, false, ViewModel.CurrentSelectedText);
+        }
+
+        private void RmvNewLineBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.CurrentSelectedText = ViewModel.CurrentSelectedText.Replace("\r\n", "").Replace("\n", "").Replace("\r", "");
+        }
+
+        private void TrimBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.CurrentSelectedText = ViewModel.CurrentSelectedText.Trim();
+        }
+
+        private void MaxOneSpaceBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.CurrentSelectedText = Regex.Replace(ViewModel.CurrentSelectedText, "  +", " ");
         }
     }
 }

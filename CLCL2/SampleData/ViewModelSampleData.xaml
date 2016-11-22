@@ -1,0 +1,26 @@
+﻿<SimpleCLCL:ViewModel xmlns:SimpleCLCL="clr-namespace:SimpleCLCL" CurrentSelectedText="Cras duis maecenas aenean nam sed aliquam mauris nullam class integer aptent quisque dis vivamus auctor congue nunc est aliquam aliquet hac blandit praesent leo amet mus accumsan nec cursus dictum non curae lectus donec per bibendum sed commodo dictumst libero etiam conubia cubilia sem fusce lorem dapibus morbi ligula eleifend nulla sit proin ante vel litora nam luctus facilisi sed egestas magnis dis euismod mattis est arcu mauris feugiat gravida augue dolor diam hac eget fames faucibus iaculis mollis lacinia elit felis ipsum laoreet" CurrentSearch="Aliquam integer quisque maecenas vestibulum" CurrentVersion="Quis leo" IsSearchVisible="False" IsPinningActive="True" MaxHistoryCount="43" Startup="True">
+	<SimpleCLCL:ViewModel.ClipboardEntrys>
+		<SimpleCLCL:StringObject IsShort="True" IsPinned="False" ShortValue="Curabitur dis parturient praesent" Value="Nam sed curae donec adipiscing"/>
+		<SimpleCLCL:StringObject IsShort="True" IsPinned="False" ShortValue="Mauris nullam consequat" Value="Phasellus etiam cras"/>
+		<SimpleCLCL:StringObject IsShort="True" IsPinned="False" ShortValue="Est lorem adipiscing nunc" Value="Accumsan vestibulum fusce duis vestibulum"/>
+		<SimpleCLCL:StringObject IsShort="True" IsPinned="False" ShortValue="Arcu diam hac morbi nulla" Value="Aptent amet auctor vivamus ante"/>
+		<SimpleCLCL:StringObject IsShort="True" IsPinned="False" ShortValue="Vestibulum eleifend" Value="Aliquam bibendum dictumst parturient"/>
+		<SimpleCLCL:StringObject IsShort="True" IsPinned="False" ShortValue="Convallis leo congue mus" Value="Proin facilisi"/>
+		<SimpleCLCL:StringObject IsShort="True" IsPinned="False" ShortValue="Faucibus vestibulum" Value="Nec aliquet"/>
+		<SimpleCLCL:StringObject IsShort="True" IsPinned="False" ShortValue="Dictum lectus inceptos non" Value="Habitant cursus dignissim"/>
+		<SimpleCLCL:StringObject IsShort="True" IsPinned="False" ShortValue="Interdum libero blandit lobortis ligula" Value="Per elementum"/>
+		<SimpleCLCL:StringObject IsShort="True" IsPinned="False" ShortValue="Sed facilisis sem parturient" Value="Commodo eget adipiscing"/>
+	</SimpleCLCL:ViewModel.ClipboardEntrys>
+	<SimpleCLCL:ViewModel.PinnedClipboardEntrys>
+		<SimpleCLCL:StringObject IsShort="True" IsPinned="False" ShortValue="Conubia dolor cubilia vestibulum" Value="Vestibulum augue litora"/>
+		<SimpleCLCL:StringObject IsShort="True" IsPinned="False" ShortValue="Sit fringilla habitasse fames" Value="Fermentum luctus"/>
+		<SimpleCLCL:StringObject IsShort="True" IsPinned="False" ShortValue="Felis adipiscing himenaeos" Value="Dapibus hendrerit"/>
+		<SimpleCLCL:StringObject IsShort="True" IsPinned="False" ShortValue="Pharetra elit" Value="Imperdiet nascetur"/>
+		<SimpleCLCL:StringObject IsShort="True" IsPinned="False" ShortValue="Magnis erat" Value="Enim ipsum malesuada vel justo"/>
+		<SimpleCLCL:StringObject IsShort="True" IsPinned="False" ShortValue="Placerat nibh lacus" Value="Eros parturient penatibus egestas nam"/>
+		<SimpleCLCL:StringObject IsShort="True" IsPinned="False" ShortValue="Nisl sed" Value="Porttitor nisi"/>
+		<SimpleCLCL:StringObject IsShort="True" IsPinned="False" ShortValue="Euismod sagittis lorem tincidunt" Value="Nunc mattis pulvinar"/>
+		<SimpleCLCL:StringObject IsShort="True" IsPinned="False" ShortValue="Mauris odio ultricies hac orci" Value="Tristique vestibulum dis magna est"/>
+		<SimpleCLCL:StringObject IsShort="True" IsPinned="False" ShortValue="Feugiat senectus massa" Value="Venenatis pede quam"/>
+	</SimpleCLCL:ViewModel.PinnedClipboardEntrys>
+</SimpleCLCL:ViewModel>

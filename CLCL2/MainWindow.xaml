@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SimpleCLCL"
         mc:Ignorable="d"
-        Title="SimpleCLCL" AllowsTransparency="True" Width="330" MaxHeight="700" Deactivated="Window_Deactivated" Closing="Window_Closing" WindowStyle="None" KeyUp="Window_KeyUp" ResizeMode="NoResize" SizeToContent="Height" Background="{x:Null}" FontFamily="Segoe UI Semilight" Visibility="Visible" Foreground="{DynamicResource DisabledForegroundBrush}" Loaded="Window_Loaded">
+        Title="SimpleCLCL" AllowsTransparency="True" Width="330" MaxHeight="700" Deactivated="Window_Deactivated" Closing="Window_Closing" WindowStyle="None" KeyUp="Window_KeyUp" ResizeMode="NoResize" SizeToContent="Height" Background="{x:Null}" FontFamily="Segoe UI Semilight" Visibility="Visible" Foreground="{DynamicResource DisabledForegroundBrush}" Loaded="Window_Loaded" d:DataContext="{d:DesignData /SampleData/ViewModelSampleData.xaml}">
     <Window.Resources>
         <local:ViewModel x:Key="ViewModel" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
@@ -705,6 +705,7 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <SolidColorBrush x:Key="background" Color="#FF383838"/>
     </Window.Resources>
     <Window.Triggers>
         <EventTrigger RoutedEvent="FrameworkElement.Loaded">
@@ -721,7 +722,7 @@
                 <TranslateTransform/>
             </TransformGroup>
         </Grid.RenderTransform>
-        <Grid x:Name="Grid1" Margin="1,1,7,7" Background="#FF383838">
+        <Grid x:Name="Grid1" Margin="1,1,7,7" Background="{DynamicResource background}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
@@ -752,7 +753,7 @@
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}">Number of Items =</TextBlock>
                                 <TextBlock TextAlignment="Center" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Text="{Binding MaxHistoryCount}" Margin="3,0,0,0" Width="25" />
-                                <Slider x:Name="Slider" SmallChange="1" Maximum="150" Minimum="20" Value="{Binding MaxHistoryCount}" Width="130" Margin="10,0,0,0" ValueChanged="Slider_ValueChanged"/>
+                                <Slider x:Name="Slider" SmallChange="1" Maximum="150" Minimum="20" Value="{Binding MaxHistoryCount}" Width="130" Margin="10,0,0,0"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock><Run Text="NEW " Foreground="Red" FontStyle="Italic" FontFamily="Segoe UI" FontSize="8"/></TextBlock>
@@ -775,10 +776,18 @@
                 <TextBlock Grid.Column="1" VerticalAlignment="Bottom" FontSize="8" Margin="0,0,5,0"><Run Text="v"/><Run Text="{Binding CurrentVersion, Mode=OneTime}" /></TextBlock>
             </Grid>
         </Grid>
-        <Popup Name="InputTextPopup" HorizontalAlignment="Left" VerticalAlignment="Top" IsOpen="False" Placement="Mouse">
-            <StackPanel>
-                <TextBox Text="{Binding CurrentSelectedText}"  />
-            </StackPanel>
+        <Popup Name="InputTextPopup" HorizontalAlignment="Left" VerticalAlignment="Top" IsOpen="False" Placement="Mouse" VerticalOffset="-42" >
+            <Border Padding="3" Background="{DynamicResource background}" BorderBrush="Black" BorderThickness="1">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,3">
+                        <Button x:Name="CandInsertBtn" Margin="0,0,3,0" Content="Copy + Insert" Background="{x:Null}" Foreground="#FFF3FF00" BorderBrush="#FFF3FF00" Click="CandInsertBtn_Click" />
+                        <Button x:Name="TrimBtn" Content="Trim" Margin="0,0,3,0" Background="{x:Null}" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" BorderBrush="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Click="TrimBtn_Click" />
+                        <Button x:Name="RmvNewLineBtn" Content="Remove Newlines" Background="{x:Null}" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" BorderBrush="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Margin="0,0,3,0" Click="RmvNewLineBtn_Click" />
+                        <Button x:Name="MaxOneSpaceBtn" Content="MSC1" ToolTip="Max Space Count 1 / Remove all unnecessary spaces. E.g. max amount of following spaces is 1." Background="{x:Null}" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" BorderBrush="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Margin="0,0,3,0" Click="MaxOneSpaceBtn_Click" />
+                    </StackPanel>
+                    <TextBox Text="{Binding CurrentSelectedText}"  />
+                </StackPanel>
+            </Border>
         </Popup>
     </Grid>
 </Window>
