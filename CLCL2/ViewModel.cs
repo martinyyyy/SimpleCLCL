@@ -49,6 +49,40 @@ namespace SimpleCLCL
         }
 
 
+        public bool isWebUrl
+        {
+            get
+            {
+                Uri uriResult;
+                bool result = Uri.TryCreate(CurrentSelectedText, UriKind.Absolute, out uriResult)
+                    && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+                return result;
+            }
+        }
+
+        public bool isFilePath
+        {
+            get
+            {
+                String path = CurrentSelectedText;
+                if(path == null)
+                    return false;
+                path = StripFilePath(path);
+                
+                return System.IO.Directory.Exists(path) || System.IO.File.Exists(path);
+            }
+        }
+
+        public static String StripFilePath(String path)
+        {
+            path = path.Trim();
+            if (path.StartsWith("\""))
+                path = path.Remove(0, 1);
+            if (path.EndsWith("\""))
+                path = path.Remove(path.Length - 1, 1);
+            return path;
+        }
+
         private string _currentSelectedText;
 
         public string CurrentSelectedText
@@ -63,6 +97,8 @@ namespace SimpleCLCL
                 {
                     _currentSelectedText = value;
                     RaisePropertyChanged();
+                    RaisePropertyChanged(nameof(isWebUrl));
+                    RaisePropertyChanged(nameof(isFilePath));
                 }
             }
         }

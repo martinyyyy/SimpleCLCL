@@ -566,5 +566,21 @@ namespace SimpleCLCL
         {
             ViewModel.CurrentSelectedText = Regex.Replace(ViewModel.CurrentSelectedText, "  +", " ");
         }
+
+        private void BrowserButton_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start(ViewModel.CurrentSelectedText);
+        }
+
+        private void ExplorerButton_Click(object sender, RoutedEventArgs e)
+        {
+            String path = ViewModel.StripFilePath(ViewModel.CurrentSelectedText);
+
+            // Is not a folder, open folder an select file
+            if (!System.IO.Directory.Exists(path))
+                path = "/select," + path;
+
+                Process.Start("explorer.exe", path);
+        }
     }
 }

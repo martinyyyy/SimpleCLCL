@@ -780,12 +780,24 @@
             <Border Padding="3" Background="{DynamicResource background}" BorderBrush="Black" BorderThickness="1">
                 <StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,3">
-                        <Button x:Name="CandInsertBtn" Margin="0,0,3,0" Content="Copy + Insert" Background="{x:Null}" Foreground="#FFF3FF00" BorderBrush="#FFF3FF00" Click="CandInsertBtn_Click" />
-                        <Button x:Name="TrimBtn" Content="Trim" Margin="0,0,3,0" Background="{x:Null}" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" BorderBrush="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Click="TrimBtn_Click" />
-                        <Button x:Name="RmvNewLineBtn" Content="Remove Newlines" Background="{x:Null}" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" BorderBrush="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Margin="0,0,3,0" Click="RmvNewLineBtn_Click" />
-                        <Button x:Name="MaxOneSpaceBtn" Content="MSC1" ToolTip="Max Space Count 1 / Remove all unnecessary spaces. E.g. max amount of following spaces is 1." Background="{x:Null}" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" BorderBrush="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Margin="0,0,3,0" Click="MaxOneSpaceBtn_Click" />
+                        <Button x:Name="BrowserButton" Background="{x:Null}" BorderBrush="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" HorizontalAlignment="Right" Margin="0,0,15,0" VerticalAlignment="Top" FontSize="13.333" BorderThickness="2" Padding="3" Click="BrowserButton_Click" Visibility="{Binding isWebUrl, Converter={StaticResource BooleanToVisibilityConverter}}" d:DataContext="{d:DesignData /SampleData/ViewModelSampleData.xaml}">
+                            <Button.Content>
+                                <TextBlock><Run Text="þ" FontFamily="Webdings" /><Run Text="Webbrowser" />
+                                </TextBlock>
+                            </Button.Content>
+                        </Button>
+                        <Button x:Name="ExplorerButton" Visibility="{Binding isFilePath, Converter={StaticResource BooleanToVisibilityConverter}}" Background="{x:Null}" Foreground="#FFF3FF00" HorizontalAlignment="Right" Margin="0,0,15,0" VerticalAlignment="Top" Padding="{Binding Padding, ElementName=BrowserButton}" BorderBrush="#FFF3FF00" BorderThickness="2" FontSize="{Binding FontSize, ElementName=BrowserButton}" Click="ExplorerButton_Click">
+                            <Button.Content>
+                                <TextBlock><Run Text="1" FontFamily="Wingdings" /><Run Text="Explorer" />
+                                </TextBlock>
+                            </Button.Content>
+                        </Button>
+                        <Button x:Name="CandInsertBtn" Margin="0,0,5,0" Content="Copy + Insert" Background="{x:Null}" Foreground="#FFF3FF00" BorderBrush="#FFF3FF00" Click="CandInsertBtn_Click" Padding="{Binding Padding, ElementName=BrowserButton}"  FontSize="{Binding FontSize, ElementName=BrowserButton}"/>
+                        <Button x:Name="TrimBtn" Content="Trim" Margin="0,0,5,0" Background="{x:Null}" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" BorderBrush="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Click="TrimBtn_Click" FontSize="{Binding FontSize, ElementName=BrowserButton}" Padding="{Binding Padding, ElementName=BrowserButton}" />
+                        <Button x:Name="RmvNewLineBtn" Content="Remove Newlines" Background="{x:Null}" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" BorderBrush="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Margin="0,0,5,0" Click="RmvNewLineBtn_Click" FontSize="{Binding FontSize, ElementName=BrowserButton}" Padding="{Binding Padding, ElementName=BrowserButton}" />
+                        <Button x:Name="MaxOneSpaceBtn" Content="MSC1" ToolTip="Max Space Count 1 / Remove all unnecessary spaces. E.g. max amount of following spaces is 1." Background="{x:Null}" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" BorderBrush="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Margin="0,0,5,0" Click="MaxOneSpaceBtn_Click" FontSize="{Binding FontSize, ElementName=BrowserButton}" Padding="{Binding Padding, ElementName=BrowserButton}" />
                     </StackPanel>
-                    <TextBox Text="{Binding CurrentSelectedText}"  />
+                    <TextBox Text="{Binding CurrentSelectedText}" Margin="0,3,0,0" Padding="2"  />
                 </StackPanel>
             </Border>
         </Popup>

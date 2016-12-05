@@ -27,7 +27,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <InstallUrl>https://simpleclcl.codeplex.com/releases/clickonce/</InstallUrl>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.8.0.0</ApplicationVersion>
+    <ApplicationVersion>1.9.0.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -72,10 +72,10 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>AA8CB8C5F4478BFCD5B33D9E3DC75939AFCEF900</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>DBEB83D491DDB2AADEADE65AE134473B020A16F1</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>SimpleCLCL_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>SimpleCLCL_extended.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -164,6 +164,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="SimpleCLCL_extended.pfx" />
     <None Include="SimpleCLCL_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
