@@ -185,6 +185,12 @@ namespace SimpleCLCL
         {
             _forceTooltip = false;
             Point point = MouseCapture.GetMousePosition();
+
+            // Multimonitor / DPI Fix
+
+            var transform = PresentationSource.FromVisual(this).CompositionTarget.TransformFromDevice;
+            point = transform.Transform(point);
+
             this.Left = point.X + 10;
             this.Top = point.Y - 10;
 
