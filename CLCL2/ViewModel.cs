@@ -131,7 +131,7 @@ namespace SimpleCLCL
             {
                 if (CurrentSearch != "")
                 {
-                    return new ObservableCollection<StringObject>(_clipboardEntrys.Where(x => x.Value.ToLower().Contains(CurrentSearch.ToLower())));
+                    return new ObservableCollection<StringObject>(_clipboardEntrys.Where(x => x.Value.ToLower().Contains(RemoveNewLines(CurrentSearch.ToLower()))));
                 }
                 else
                 {
@@ -200,6 +200,11 @@ namespace SimpleCLCL
         protected virtual void RaisePropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        internal string RemoveNewLines(string currentSelectedText)
+        {
+            return currentSelectedText.Replace("\r\n", "").Replace("\n", "").Replace("\r", "");
         }
 
         #endregion INotifyPropertyChanged

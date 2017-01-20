@@ -101,12 +101,12 @@ namespace SimpleCLCL
         {
             if (Clipboard.ContainsText())
             {
+                // Delay if clipboard still open by other app
+                await Task.Delay(10);
+
                 bool done = false;
                 for (int i = 0; i < 5 && !done; i++)
                 {
-                    // Delay if clipboard still open by other app
-                    await Task.Delay(20);
-
                     try
                     {
                         var clipboradData = Clipboard.GetDataObject();
@@ -125,6 +125,10 @@ namespace SimpleCLCL
                             if (newObject.Value.Trim().Length == 0)
                                 return;
 
+                            // Clean search to get the real clipboard entrys and not just a view or results which we cant modify
+                            // window is closed after this code anyway and search is discarded
+                            ViewModel.CurrentSearch = "";
+
                             ViewModel.ClipboardEntrys.Remove(ViewModel.ClipboardEntrys.FirstOrDefault(x => x.Value == newObject.Value));
                             ViewModel.ClipboardEntrys.Insert(0, newObject);
 
@@ -139,6 +143,8 @@ namespace SimpleCLCL
                     catch (COMException)
                     {
                         // Clipboard already opened
+                        // Delay if clipboard still open by other app
+                        await Task.Delay(10);
                     }
                 }
 
@@ -560,7 +566,7 @@ namespace SimpleCLCL
 
         private void RmvNewLineBtn_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.CurrentSelectedText = ViewModel.CurrentSelectedText.Replace("\r\n", "").Replace("\n", "").Replace("\r", "");
+            ViewModel.CurrentSelectedText = ViewModel.RemoveNewLines(ViewModel.CurrentSelectedText);
         }
 
         private void TrimBtn_Click(object sender, RoutedEventArgs e)

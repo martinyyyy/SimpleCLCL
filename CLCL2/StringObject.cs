@@ -17,6 +17,6 @@ namespace SimpleCLCL
 
         public bool IsPinned { get; set; }
 
-        public bool IsShort => Value.Length > 40;
+        public bool IsShort => Value.Length > 40 || Value.Contains("\n");
     }
 }
