@@ -25,7 +25,8 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>https://simpleclcl.codeplex.com/releases/clickonce/</InstallUrl>
+    <InstallUrl>https://raw.githubusercontent.com/martinyyyy/SimpleCLCL/master/CLCL2/publish/</InstallUrl>
+    <UpdateUrl>https://raw.githubusercontent.com/martinyyyy/SimpleCLCL/master/CLCL2/publish/</UpdateUrl>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.9.3.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
