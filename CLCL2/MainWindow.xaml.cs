@@ -576,7 +576,14 @@ namespace SimpleCLCL
 
         private void MaxOneSpaceBtn_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.CurrentSelectedText = Regex.Replace(ViewModel.CurrentSelectedText, "  +", " ");
+            // Remove everything except newline
+            var r = Regex.Replace(ViewModel.CurrentSelectedText, @"(?:(?![\n\r])\s)+", " ");
+
+            // Trim each line (remove spaces at beginning and end)
+            r = string.Join("\n", r.Split('\n').Select(s => s.Trim()));
+
+            // replace multiple spaces with max one space
+            ViewModel.CurrentSelectedText = Regex.Replace(r, @"\n((?:(?![\n\r])\s)+)", " ");
         }
 
         private void BrowserButton_Click(object sender, RoutedEventArgs e)
