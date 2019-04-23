@@ -18,6 +18,7 @@ Easy, I don't like the style of the original one and it is missing a few things 
 - favorites
 - rightclick to open a textbox for easier copy of text parts
 - Run on startup
+- Placeholder: Replace a given Placeholder in your string with the latest Clipboard Entry
 
 ## How to use
 - ALT+C opens the list of saved clipboard items next to the mouse pointer
