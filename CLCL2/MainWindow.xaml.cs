@@ -68,6 +68,11 @@ namespace SimpleCLCL
                 }
             }
 
+            if(!string.IsNullOrEmpty(Properties.Settings.Default.PlaceHolder))
+            {
+                ViewModel.PlaceHolder = Properties.Settings.Default.PlaceHolder;
+            }
+
             HideWindow();
             CheckStartup();
         }
@@ -329,6 +334,9 @@ namespace SimpleCLCL
                 Properties.Settings.Default.pinnedClipboardHistory.Add(entry.Value);
             }
 
+            if(!string.IsNullOrEmpty(ViewModel.PlaceHolder))
+                Properties.Settings.Default.PlaceHolder = ViewModel.PlaceHolder;
+
             Properties.Settings.Default.Save();
         }
 
@@ -419,9 +427,17 @@ namespace SimpleCLCL
             if (fromListbox && CLipboardEntryListBox.SelectedIndex == -1)
                 return;
 
+            bool placeholderReplacement = false;
+
             if (fromListbox)
             {
                 text = ViewModel.ClipboardEntrys[CLipboardEntryListBox.SelectedIndex].Value;
+
+                if (CLipboardEntryListBox.SelectedIndex != 0 && insert && text.Contains(ViewModel.PlaceHolder))
+                {
+                    text = text.Replace(ViewModel.PlaceHolder, ViewModel.ClipboardEntrys[0].Value);
+                    placeholderReplacement = true;
+                }
             }
 
             HideWindow();
@@ -432,6 +448,12 @@ namespace SimpleCLCL
             {
                 await Task.Delay(250);
                 SendKeys.SendWait("^v");
+            }
+
+
+            if (placeholderReplacement && ViewModel.ClipboardEntrys[0].Value == text)
+            {
+                ViewModel.ClipboardEntrys.RemoveAt(0);
             }
         }
 

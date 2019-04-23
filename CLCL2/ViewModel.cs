@@ -173,6 +173,25 @@ namespace SimpleCLCL
             }
         }
 
+        private string _PlaceHolder = "<placeholder>";
+
+        public string PlaceHolder
+        {
+            get
+            {
+                return _PlaceHolder;
+            }
+            set
+            {
+                if (_PlaceHolder != value)
+                {
+                    _PlaceHolder = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
+
         private int _maxHistoryCount = 50;
 
         public int MaxHistoryCount

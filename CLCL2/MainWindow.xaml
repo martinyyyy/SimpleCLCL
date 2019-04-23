@@ -755,9 +755,11 @@
                                 <TextBlock TextAlignment="Center" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Text="{Binding MaxHistoryCount}" Margin="3,0,0,0" Width="25" />
                                 <Slider x:Name="Slider" SmallChange="1" Maximum="150" Minimum="20" Value="{Binding MaxHistoryCount}" Width="130" Margin="10,0,0,0"/>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock><Run Text="NEW " Foreground="Red" FontStyle="Italic" FontFamily="Segoe UI" FontSize="8"/></TextBlock>
-                                <CheckBox x:Name="StartupChk" Content="Run At Startup" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Margin="5,0,0,0" IsChecked="{Binding Startup}" Checked="StartupChk_Checked" Unchecked="StartupChk_Unchecked"/>
+                            <CheckBox x:Name="StartupChk" Content="Run At Startup" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" IsChecked="{Binding Startup}" Checked="StartupChk_Checked" Unchecked="StartupChk_Unchecked"/>
+                            <StackPanel Orientation="Horizontal" ToolTip="If a Text with the given Placeholder is selected from the List the Placeholder will be replace with the latest copied Text. The generated Text will not be put into the History.">
+                                <TextBlock VerticalAlignment="Center"><Run Text="NEW " Foreground="Red" FontStyle="Italic" FontFamily="Segoe UI" FontSize="8"/></TextBlock>
+                                <TextBlock Margin="5,0,0,0" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}">Replace Placeholder</TextBlock>
+                                <TextBox Text="{Binding PlaceHolder}" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Margin="10,0,0,0" MinWidth="100" />
                             </StackPanel>
                             <Rectangle Fill="#FFF4F4F5" Height="1" Stroke="Black" Margin="0,5"/>
                             <TextBlock><Run Text="ALT + C" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" /><Run Text=" "/><Run Text=" = Switch To Pinned Entrys" /></TextBlock>

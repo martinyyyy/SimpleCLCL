@@ -28,7 +28,7 @@
     <InstallUrl>https://raw.githubusercontent.com/martinyyyy/SimpleCLCL/master/CLCL2/publish/</InstallUrl>
     <UpdateUrl>https://raw.githubusercontent.com/martinyyyy/SimpleCLCL/master/CLCL2/publish/</UpdateUrl>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>2.0.0.0</ApplicationVersion>
+    <ApplicationVersion>2.1.0.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -73,19 +73,18 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>DBEB83D491DDB2AADEADE65AE134473B020A16F1</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>FF3C430687A16756EA617B5E1DECB34F7AB69D32</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>SimpleCLCL_extended.pfx</ManifestKeyFile>
+    <ManifestKeyFile>SimpleCLCL_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Expression.Drawing, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="NHotkey, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NHotkey.1.2.1\lib\net20\NHotkey.dll</HintPath>
       <Private>True</Private>
@@ -165,8 +164,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="SimpleCLCL_extended.pfx" />
-    <None Include="SimpleCLCL_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
