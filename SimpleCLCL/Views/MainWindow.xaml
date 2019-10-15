@@ -7,7 +7,7 @@
         xmlns:viewModel="clr-namespace:SimpleCLCL.ViewModel"
         xmlns:converter="clr-namespace:SimpleCLCL.Utils.Converter"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Loaded="MainWindow_OnLoaded">
+        Title="MainWindow" Height="450" Width="800" Loaded="MainWindow_OnLoaded" Deactivated="MainWindow_OnDeactivated" Activated="MainWindow_OnActivated" Topmost="True">
     <Window.DataContext>
         <viewModel:MainViewModel />
     </Window.DataContext>
@@ -23,7 +23,7 @@
         <Grid>
             <TextBox Style="{StaticResource WatermarkStyle}" Tag="Search..." Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}"></TextBox>
         </Grid>
-        <ListBox Margin="0 10" Grid.Row="1" ItemsSource="{Binding FilteredEntrys}">
+        <ListBox Margin="0 10" Grid.Row="1" ItemsSource="{Binding FilteredEntrys}" x:Name="ClipboardEntrysListbox">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <VirtualizingStackPanel VirtualizationMode="Recycling" />
