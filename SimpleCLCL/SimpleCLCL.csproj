@@ -77,6 +77,8 @@
     <Compile Include="Utils\FocusHelper.cs" />
     <Compile Include="Utils\MouseCapture.cs" />
     <Compile Include="Utils\NativeMethods.cs" />
+    <Compile Include="Utils\SettingsHelper.cs" />
+    <Compile Include="Utils\WindowHelper.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

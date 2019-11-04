@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Drawing;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using NHotkey;
 using NHotkey.Wpf;
 using SimpleCLCL.Utils;
 using SimpleCLCL.ViewModel;
+using Clipboard = System.Windows.Clipboard;
+using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MessageBox = System.Windows.MessageBox;
 
 namespace SimpleCLCL.Views
@@ -45,7 +50,7 @@ namespace SimpleCLCL.Views
 
         public new void Show()
         {
-            SetPositionToMousePosition();
+            WindowHelper.SetPositionToMousePosition(this);
             base.Show();
 
             Activate();
@@ -54,6 +59,7 @@ namespace SimpleCLCL.Views
 
         public new void Hide()
         {
+            MainViewModel.Search = string.Empty;
             base.Hide();
             Topmost = false;
         }
@@ -71,28 +77,62 @@ namespace SimpleCLCL.Views
 
         private void MainWindow_OnActivated(object sender, EventArgs e)
         {
-            ClipboardEntrysListbox.SelectedIndex = 0;
             FocusHelper.FocusFirstItem(ClipboardEntrysListbox);
         }
-
-        private void SetPositionToMousePosition()
+        
+        private void ClipboardEntrysListbox_OnKeyUp(object sender, KeyEventArgs e)
         {
-            var point = MouseCapture.GetMousePosition();
+            switch (e.Key)
+            {
+                case Key.Enter:
+                    InsertClipboard(MainViewModel.SelectedItem);
+                    break;
+                case Key.Escape:
+                    Hide();
+                    break;
+                case Key.Up: case Key.Down: case Key.Left:case Key.Right:
+                    break;
+                default:
+                    if (Keyboard.Modifiers.HasFlag(ModifierKeys.None) && e.Key.ToString().Length == 1)
+                    {
+                        MainViewModel.Search = e.Key.ToString();
+                        SearchBox.Focus();
+                        SearchBox.CaretIndex = 1;
+                    }
 
-            // Multimonitor / DPI Fix
-            var transform = PresentationSource.FromVisual(this).CompositionTarget.TransformFromDevice;
-            point = transform.Transform(point);
+                    break;
+            }
+        }
 
-            Left = point.X + 10;
-            Top = point.Y - 10;
+        private void SearchBox_OnKeyUp(object sender, KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.Escape:
+                    Hide();
+                    break;
+                case Key.Down:
+                    FocusHelper.FocusFirstItem(ClipboardEntrysListbox);
+                    break;
+            }
 
-            var currScreen = Screen.PrimaryScreen;
-            foreach (var screen in Screen.AllScreens)
-                if (screen.Bounds.IntersectsWith(new Rectangle((int)Left, (int)Top, 1, 1)))
-                    currScreen = screen;
+        }
 
-            if (Top + Height > currScreen.Bounds.Height)
-                Top = currScreen.Bounds.Height - Height;
+        public async void InsertClipboard(String text)
+        {
+            Clipboard.SetDataObject(text);
+            Hide();
+
+            await Task.Delay(250);
+            SendKeys.SendWait("^v");
+        }
+
+        private void ClipboardEntrysListbox_OnMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if(e.ChangedButton == MouseButton.Left)
+                InsertClipboard(MainViewModel.SelectedItem);
+            else if(e.ChangedButton == MouseButton.Right)
+                MessageBox.Show("rechtsklick");
         }
     }
 }

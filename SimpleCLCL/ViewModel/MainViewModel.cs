@@ -26,6 +26,18 @@ namespace SimpleCLCL.ViewModel
         public IEnumerable<string> FilteredEntrys => _entrys.Where(x => x.ToLower().Contains(Search.ToLower()));
         private string _search = string.Empty;
         private readonly List<string> _entrys = new List<string>();
+        private string _selectedItem;
+
+        public string SelectedItem
+        {
+            get => _selectedItem;
+            set
+            {
+                if (value == _selectedItem) return;
+                _selectedItem = value;
+                OnPropertyChanged();
+            }
+        }
 
         public string Search
         {
@@ -41,7 +53,7 @@ namespace SimpleCLCL.ViewModel
 
         public MainViewModel()
         {
-            for (int i = 0; i < 100; i++) Add("SACK" + i);
+            _entrys.AddRange(SettingsHelper.Load());
         }
 
         public void Add(string entry)
@@ -52,12 +64,12 @@ namespace SimpleCLCL.ViewModel
             OnPropertyChanged(nameof(FilteredEntrys));
         }
 
-        public void AddAll(IEnumerable<string> range) => _entrys.AddRange(range);
         public void Remove(string entry) => _entrys.Remove(entry);
 
         public void ClipboardTextChanged(object sender, ClipboardTextChangedEventArgs e)
         {
             Add(e.Text);
+            Task.Run(() => SettingsHelper.Save(_entrys));
         }
     }
 }

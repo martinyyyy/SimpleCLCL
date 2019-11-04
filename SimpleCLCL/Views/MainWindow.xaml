@@ -21,9 +21,9 @@
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid>
-            <TextBox Style="{StaticResource WatermarkStyle}" Tag="Search..." Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+            <TextBox x:Name="SearchBox" Style="{StaticResource WatermarkStyle}" Tag="Search..." Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}" KeyUp="SearchBox_OnKeyUp"></TextBox>
         </Grid>
-        <ListBox Margin="0 10" Grid.Row="1" ItemsSource="{Binding FilteredEntrys}" x:Name="ClipboardEntrysListbox">
+        <ListBox Margin="0 10" Grid.Row="1" ItemsSource="{Binding FilteredEntrys}" x:Name="ClipboardEntrysListbox" KeyUp="ClipboardEntrysListbox_OnKeyUp" MouseUp="ClipboardEntrysListbox_OnMouseUp" SelectedItem="{Binding SelectedItem}">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <VirtualizingStackPanel VirtualizationMode="Recycling" />

@@ -13,21 +13,20 @@ namespace SimpleCLCL.Utils
     {
         public static void FocusFirstItem(ListBox listBox)
         {
-            listBox.UpdateLayout(); // Pre-generates item containers
+            listBox.SelectedIndex = 0;
 
-            if (listBox.SelectedIndex == -1)
-            {
-                listBox.SelectedIndex = 0;
-            }
+            listBox.UpdateLayout(); // Pre-generates item containers
+            var scrollViewer = FindVisualChild<ScrollViewer>(listBox);
+            scrollViewer.ScrollToVerticalOffset(0);
 
             ListBoxItem listBoxItem = GetCurrentListboxItem(listBox);
             if (listBoxItem != null)
             {
-                listBoxItem.Focus();
                 listBox.ScrollIntoView(listBox.Items[0]);
+                listBoxItem.Focus();
             }
         }
-
+        
         private static ListBoxItem GetCurrentListboxItem(ListBox listBox)
         {
             return (ListBoxItem)listBox
@@ -35,7 +34,7 @@ namespace SimpleCLCL.Utils
                 .ContainerFromItem(listBox.SelectedItem);
         }
 
-        private static TChild FindVisualChild<TChild>(DependencyObject obj) where TChild : DependencyObject
+        public static TChild FindVisualChild<TChild>(DependencyObject obj) where TChild : DependencyObject
         {
             for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
             {
@@ -53,5 +52,7 @@ namespace SimpleCLCL.Utils
             }
             return null;
         }
+
+
     }
 }
