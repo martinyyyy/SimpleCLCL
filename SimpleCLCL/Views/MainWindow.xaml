@@ -7,20 +7,21 @@
         xmlns:viewModel="clr-namespace:SimpleCLCL.ViewModel"
         xmlns:converter="clr-namespace:SimpleCLCL.Utils.Converter"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="350" Loaded="MainWindow_OnLoaded" Deactivated="MainWindow_OnDeactivated"
+        Title="MainWindow" Height="450" Width="350" Loaded="MainWindow_OnLoaded" Deactivated="MainWindow_OnDeactivated" ResizeMode="CanResize" Background="White"
         Activated="MainWindow_OnActivated" Topmost="True" WindowStyle="None">
     <Window.DataContext>
         <viewModel:MainViewModel />
     </Window.DataContext>
     <Window.Resources>
         <converter:PreviewTextConverter x:Key="PreviewTextConverter" />
+        <converter:StackPanelWidthConverter x:Key="StackPanelWidthConverter" />
     </Window.Resources>
-    <Grid Margin="5 0">
+    <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Grid>
+        <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition Width="auto" />
@@ -37,9 +38,9 @@
                 </Viewbox>
             </Button>
         </Grid>
-        <ListBox Margin="0 5" Grid.Row="1" BorderThickness="0" ItemsSource="{Binding FilteredEntrys}"
+        <ListBox Margin="0 5" Grid.Row="1" BorderThickness="0" ItemsSource="{Binding FilteredEntrys}" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                  x:Name="ClipboardEntrysListbox" KeyUp="ClipboardEntrysListbox_OnKeyUp"
-                 MouseUp="ClipboardEntrysListbox_OnMouseUp" SelectedItem="{Binding SelectedItem}">
+                 MouseUp="ClipboardEntrysListbox_OnMouseUp" SelectedItem="{Binding SelectedItem}" FontFamily="Segoe UI Semibold">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <VirtualizingStackPanel VirtualizationMode="Recycling" IsVirtualizing="True" />
@@ -47,17 +48,31 @@
             </ListBox.ItemsPanel>
             <ListBox.ItemTemplate>
                 <ItemContainerTemplate>
-                    <TextBlock Padding="4 1" Text="{Binding ., Converter={StaticResource PreviewTextConverter}}" TextTrimming="CharacterEllipsis" Width="{Binding ActualWidth, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type VirtualizingStackPanel}}}" />
+                    <TextBlock Text="{Binding ., Converter={StaticResource PreviewTextConverter}}" TextTrimming="CharacterEllipsis" 
+                               Width="{Binding ActualWidth, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type VirtualizingStackPanel}}, Converter={StaticResource StackPanelWidthConverter}}"/>
                 </ItemContainerTemplate>
             </ListBox.ItemTemplate>
             <ListBox.Resources>
                 <Style TargetType="ScrollBar">
                     <Setter Property="Template" Value="{StaticResource Win10Scrollbar}" />
                 </Style>
-                <Style TargetType="ListBoxItem">
-                    <Setter Property="Padding" Value="0 1"></Setter>
-                </Style>
             </ListBox.Resources>
         </ListBox>
+
+        <Popup Grid.Row="1" Name="ItemPopup" HorizontalAlignment="Left" VerticalAlignment="Top" IsOpen="False" Width="500" AllowsTransparency="True">
+            <Border Margin="20" Background="Transparent" BorderThickness="1">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="10" Direction="-35" Opacity="0.4"/>
+                </Border.Effect>
+                <Border BorderThickness="1" BorderBrush="Black">
+                    <StackPanel Background="LightGray" >
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
+                            <Button Padding="4 2" Content="Copy+Insert" Background="Transparent"></Button>
+                        </StackPanel>
+                        <TextBox Text="{Binding SelectedItem}" Margin="0,3,0,0" Padding="2"  />
+                    </StackPanel>
+                </Border>
+            </Border>
+        </Popup>
     </Grid>
 </Window>

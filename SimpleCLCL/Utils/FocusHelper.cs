@@ -27,7 +27,7 @@ namespace SimpleCLCL.Utils
             }
         }
         
-        private static ListBoxItem GetCurrentListboxItem(ListBox listBox)
+        public static ListBoxItem GetCurrentListboxItem(ListBox listBox)
         {
             return (ListBoxItem)listBox
                 .ItemContainerGenerator

@@ -9,19 +9,13 @@ using System.Windows.Data;
 
 namespace SimpleCLCL.Utils.Converter
 {
-    public class PreviewTextConverter : IValueConverter
+    public class StackPanelWidthConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is string s)
+            if (value is double d)
             {
-                if (s.Length > 100) s = s.Substring(0, 100);
-
-                s = TextHelper.MinimizeWhiteSpaces(s);
-                s = Regex.Replace(s, @"\t|\r", "");
-                s = Regex.Replace(s, @"\n", " ").Trim();
-
-                return s;
+                return d - 10;
             }
 
             return value;

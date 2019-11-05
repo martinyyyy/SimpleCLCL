@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Forms;
 using System.Windows.Input;
 using NHotkey;
@@ -50,6 +51,7 @@ namespace SimpleCLCL.Views
 
         public new void Show()
         {
+            ItemPopup.IsOpen = false;
             WindowHelper.SetPositionToMousePosition(this);
             base.Show();
 
@@ -59,6 +61,7 @@ namespace SimpleCLCL.Views
 
         public new void Hide()
         {
+            ItemPopup.IsOpen = false;
             MainViewModel.Search = string.Empty;
             base.Hide();
             Topmost = false;
@@ -90,7 +93,18 @@ namespace SimpleCLCL.Views
                 case Key.Escape:
                     Hide();
                     break;
-                case Key.Up: case Key.Down: case Key.Left:case Key.Right:
+                case Key.Left:
+                    ItemPopup.IsOpen = false;
+                    e.Handled = true;
+                    break;
+                case Key.Up: case Key.Down:
+                    if(ItemPopup.IsOpen)
+                        OpenTooltip(true);
+                    e.Handled = true;
+                    break;
+                case Key.Right:
+                    OpenTooltip(true);
+                    e.Handled = true;
                     break;
                 default:
                     if (Keyboard.Modifiers.HasFlag(ModifierKeys.None) && e.Key.ToString().Length == 1)
@@ -102,6 +116,23 @@ namespace SimpleCLCL.Views
 
                     break;
             }
+        }
+
+        private void OpenTooltip(bool placeAtItem = false)
+        {
+            if (placeAtItem)
+            {
+                ItemPopup.Placement = PlacementMode.Right;
+                ItemPopup.PlacementTarget = FocusHelper.GetCurrentListboxItem(ClipboardEntrysListbox);
+            }
+            else
+            {
+                ItemPopup.Placement = PlacementMode.Mouse;
+                ItemPopup.PlacementTarget = null;
+            }
+
+            ItemPopup.IsOpen = false;
+            ItemPopup.IsOpen = true;
         }
 
         private void SearchBox_OnKeyUp(object sender, KeyEventArgs e)
@@ -123,11 +154,10 @@ namespace SimpleCLCL.Views
 
         public async void InsertClipboard(String text)
         {
-            return;
             Clipboard.SetDataObject(text);
             Hide();
 
-            await Task.Delay(250);
+            await Task.Delay(80);
             SendKeys.SendWait("^v");
         }
 
@@ -135,8 +165,8 @@ namespace SimpleCLCL.Views
         {
             if(e.ChangedButton == MouseButton.Left)
                 InsertClipboard(MainViewModel.SelectedItem);
-            else if(e.ChangedButton == MouseButton.Right)
-                MessageBox.Show("rechtsklick");
+            else if (e.ChangedButton == MouseButton.Right)
+                OpenTooltip();
         }
 
         private void SettingsBtn_OnClick(object sender, RoutedEventArgs e)

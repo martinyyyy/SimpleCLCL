@@ -53,7 +53,7 @@ namespace SimpleCLCL.ViewModel
 
         public MainViewModel()
         {
-            _entrys.AddRange(SettingsHelper.Load());
+            //_entrys.AddRange(SettingsHelper.Load());
 
             for(int i=0; i < 100; i++)
                 Add("iqjjoqdwnqwdwqsfrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrqwdwqdwqd"+i);
@@ -63,6 +63,8 @@ namespace SimpleCLCL.ViewModel
         { 
             _entrys.Remove(entry);
             _entrys.Insert(0,entry);
+
+            while (_entrys.Count > 100) _entrys.RemoveAt(_entrys.Count-1);
 
             OnPropertyChanged(nameof(FilteredEntrys));
         }
