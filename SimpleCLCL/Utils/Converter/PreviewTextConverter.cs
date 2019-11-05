@@ -15,8 +15,9 @@ namespace SimpleCLCL.Utils.Converter
         {
             if (value is string s)
             {
-                s = Regex.Replace(s, @"\t|\n|\r", "").Trim();
-                if (s.Length > 40) return s.Substring(0, 40) + "...";
+                s = TextHelper.MinimizeWhiteSpaces(s);
+                s = Regex.Replace(s, @"\t|\r", "");
+                s = Regex.Replace(s, @"\n", " ").Trim();
                 return s;
             }
 

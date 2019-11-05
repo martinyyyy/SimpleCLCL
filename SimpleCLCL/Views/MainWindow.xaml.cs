@@ -95,7 +95,7 @@ namespace SimpleCLCL.Views
                 default:
                     if (Keyboard.Modifiers.HasFlag(ModifierKeys.None) && e.Key.ToString().Length == 1)
                     {
-                        MainViewModel.Search = e.Key.ToString();
+                        MainViewModel.Search = e.Key.ToString().ToLower();
                         SearchBox.Focus();
                         SearchBox.CaretIndex = 1;
                     }
@@ -111,15 +111,19 @@ namespace SimpleCLCL.Views
                 case Key.Escape:
                     Hide();
                     break;
+                case Key.Enter:
+                    FocusHelper.FocusFirstItem(ClipboardEntrysListbox);
+                    InsertClipboard(MainViewModel.SelectedItem);
+                    break;
                 case Key.Down:
                     FocusHelper.FocusFirstItem(ClipboardEntrysListbox);
                     break;
             }
-
         }
 
         public async void InsertClipboard(String text)
         {
+            return;
             Clipboard.SetDataObject(text);
             Hide();
 
@@ -133,6 +137,11 @@ namespace SimpleCLCL.Views
                 InsertClipboard(MainViewModel.SelectedItem);
             else if(e.ChangedButton == MouseButton.Right)
                 MessageBox.Show("rechtsklick");
+        }
+
+        private void SettingsBtn_OnClick(object sender, RoutedEventArgs e)
+        {
+            new SettingsWindow().ShowDialog();
         }
     }
 }

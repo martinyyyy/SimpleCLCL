@@ -54,6 +54,9 @@ namespace SimpleCLCL.ViewModel
         public MainViewModel()
         {
             _entrys.AddRange(SettingsHelper.Load());
+
+            for(int i=0; i < 100; i++)
+                Add("iqjjoqdwnqwdwqsfrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrqwdwqdwqd"+i);
         }
 
         public void Add(string entry)
