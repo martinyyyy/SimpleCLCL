@@ -623,5 +623,33 @@ namespace SimpleCLCL
 
                 Process.Start("explorer.exe", path);
         }
+
+        private void JoinButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (ViewModel.IsJoinMode)
+            {
+                var stringObjects = ViewModel.ClipboardEntrys.Where(x => x.JoinThis).Select(x => x.Value.Trim()).ToList();
+
+                var joins = string.Join(ViewModel.JoinSeperator, stringObjects);
+                Clipboard.SetDataObject(joins);
+            }
+            else
+            {
+                foreach (var stringObject in ViewModel.ClipboardEntrys.Where(x => x.JoinThis))
+                {
+                    stringObject.JoinThis = false;
+                }
+
+                JoinSplitterInput.IsOpen = true;
+            }
+
+            ViewModel.IsJoinMode = !ViewModel.IsJoinMode;
+        }
+
+        private void SetSplitterButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            JoinSplitterInput.IsOpen = false;
+
+        }
     }
 }

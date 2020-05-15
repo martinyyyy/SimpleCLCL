@@ -9,6 +9,7 @@
     <Window.Resources>
         <local:ViewModel x:Key="ViewModel" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <local:InvertedBool2VisibilityConverter x:Key="InvertedBool2VisibilityConverter"></local:InvertedBool2VisibilityConverter>
         <DataTemplate x:Key="StringObjectTemplate">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -18,7 +19,9 @@
                 <Grid.ToolTip>
                     <TextBlock Text="{Binding Value}"></TextBlock>
                 </Grid.ToolTip>
-                <CheckBox x:Name="pinChbx" HorizontalAlignment="Left" Margin="0" Background="{x:Null}" VerticalAlignment="Center" Padding="5,0,0,0" RenderTransformOrigin="0.5,0.5" Opacity="0.3" Foreground="White" IsChecked="{Binding IsPinned}" Style="{DynamicResource CheckBoxStyle1}" Checked="PinChbx_Checked" Unchecked="PinChbx_Unchecked" ToolTip="Pin item">
+                <CheckBox x:Name="pinChbx" Visibility="{Binding IsJoinMode, Converter={StaticResource InvertedBool2VisibilityConverter}}" HorizontalAlignment="Left" Margin="0" Background="{x:Null}" VerticalAlignment="Center" Padding="5,0,0,0" RenderTransformOrigin="0.5,0.5" Opacity="0.3" Foreground="White" IsChecked="{Binding IsPinned}" Style="{DynamicResource CheckBoxStyle1}" Checked="PinChbx_Checked" Unchecked="PinChbx_Unchecked" ToolTip="Pin item">
+                </CheckBox>
+                <CheckBox Grid.Column="0" Visibility="{Binding IsJoinMode, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Left" Margin="0" Background="{x:Null}" VerticalAlignment="Center" Padding="5,0,0,0" RenderTransformOrigin="0.5,0.5" Opacity="0.3" Foreground="White" IsChecked="{Binding JoinThis}" Style="{DynamicResource CheckBoxStyle1}" ToolTip="Join this">
                 </CheckBox>
                 <TextBlock Text="{Binding ShortValue}" Margin="0,0,10,0" Grid.Column="1"/>
                 <TextBlock Text="..." Visibility="{Binding IsShort, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Right" Width="Auto" FlowDirection="RightToLeft" Background="{x:Null}" Margin="0" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Grid.Column="1"/>
@@ -774,7 +777,10 @@
                         </StackPanel>
                     </Grid>
                 </Expander>
-                <Button x:Name="DeleteButton" Content="Clear History" Background="{x:Null}" BorderBrush="#FFF30C0C" Foreground="#FFF30C0C" HorizontalAlignment="Right" Margin="0,0,5,0" VerticalAlignment="Top" Padding="3,1" Grid.ColumnSpan="2" Click="DeleteButton_Click"/>
+                <StackPanel Margin="0 0 5 0" Orientation="Horizontal" HorizontalAlignment="Right" Grid.ColumnSpan="2">
+                    <Button x:Name="JoinButton" Margin="0 0 5 0" Content="Join Items" Background="{x:Null}" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" BorderBrush="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" VerticalAlignment="Top" Padding="3,1" Click="JoinButton_OnClick"/>
+                    <Button x:Name="DeleteButton" Content="Clear History" Background="{x:Null}" BorderBrush="#FFF30C0C" Foreground="#FFF30C0C" VerticalAlignment="Top" Padding="3,1" Click="DeleteButton_Click"/>
+                </StackPanel>
                 <TextBlock Grid.Column="1" VerticalAlignment="Bottom" FontSize="8" Margin="0,0,5,0"><Run Text="v"/><Run Text="{Binding CurrentVersion, Mode=OneTime}" /></TextBlock>
             </Grid>
         </Grid>
@@ -803,5 +809,13 @@
                 </StackPanel>
             </Border>
         </Popup>
+        <Popup Name="JoinSplitterInput" HorizontalAlignment="Left" VerticalAlignment="Top" IsOpen="False" Placement="Mouse" VerticalOffset="-42" >
+            <Border Padding="3" Background="{DynamicResource background}" BorderBrush="Black" BorderThickness="1">
+                <StackPanel Orientation="Horizontal">
+                    <TextBox Text="{Binding JoinSeperator}" MinWidth="60" TextAlignment="Center"></TextBox>
+                    <Button Content="Set Splitter" Background="{x:Null}" Margin="5 0 0 0" Foreground="#FFF3FF00" BorderBrush="#FFF3FF00" Click="SetSplitterButton_OnClick"></Button>
+                </StackPanel>
+            </Border>
+            </Popup>
     </Grid>
 </Window>

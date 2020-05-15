@@ -193,6 +193,8 @@ namespace SimpleCLCL
 
 
         private int _maxHistoryCount = 50;
+        private bool _IsJoinMode;
+        private string _JoinSeperator = "\",\"";
 
         public int MaxHistoryCount
         {
@@ -209,6 +211,39 @@ namespace SimpleCLCL
                 }
             }
         }
+
+        public bool IsJoinMode
+        {
+            get
+            {
+                return _IsJoinMode;
+            }
+            set
+            {
+                if (_IsJoinMode != value)
+                {
+                    _IsJoinMode = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
+        public string JoinSeperator
+        {
+            get
+            {
+                return _JoinSeperator;
+            }
+            set
+            {
+                if (_JoinSeperator != value)
+                {
+                    _JoinSeperator = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
 
         public string CurrentVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
