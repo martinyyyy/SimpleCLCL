@@ -1,8 +1,7 @@
 ## What is it?
 SimpleCLCL is a simple multiclipboard. 
-It is inspired by http://www.nakka.com/soft/clcl/index_eng.html (thus the name SimpleCLCL). 
-It's written in .NET 4.5 and WPF. This is just a quick&dirty project. A lot of code snippets are copy&paste from everywhere including stackoverflow.
-This project used to be hosted on [Codeplex](https://simpleclcl.codeplex.com/).
+It's written in .NET 4.5 using WPF. This started out as a quick (& maybe dirty) implementation of a multi clipboard but over time has envolved into something quite special. The way I code has completely changed and I even get annoyed in pair programing session if the partner doesn't have some kind of mutli clipboard.
+This project was originaly inspired by http://www.nakka.com/soft/clcl/index_eng.html (thus the name SimpleCLCL) and used to be hosted on [Codeplex](https://simpleclcl.codeplex.com/).
 
 ## Why did you write this?
 Easy, I don't like the style of the original one and it is missing a few things I really wanted. 
