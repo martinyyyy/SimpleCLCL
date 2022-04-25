@@ -27,13 +27,6 @@ Easy, I don't like the style of the original one and it is missing a few things 
 - begin typing to open search
 
 ## Smartscreen / Stuck at 100% installation
-Windows 10 Smartscreen may prevent the program from running because the executable is not signed by a known authority (this costs money). Click on more info in the dialog and press run anyway to bypass the filter.
+Windows 10 Smartscreen may prevent the program from running because the executable is not signed by a known authority. Click on more info in the dialog and press run anyway to bypass the filter.
 
 Sometimes Smartscreen doesn't even work like intended and doesn't inform the user the program is not known and just crashes. If you see the process "Smartscreen" in your task manager and SimpleCLCL isn't showing up, kill all Smartscreen process and the installation should run to completion. 
-
-### If Smartscreen keeps on crashing everytime you try to start SimpleCLCL do the following steps.
-Open up the Windows setting "Security and Maintaince"
-On the left side open Smartscreen and disable it
-Kill all Smartscreen processes and SimpleCLCL in task manager
-Run SimpleCLCL.application again and uncheck the "ask me everytime...." checkbox.
-Enable Smartscreen again
